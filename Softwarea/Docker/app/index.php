@@ -1,23 +1,87 @@
+<?php
+$host = 'db';
+$dbname = 'alaiktomugi';
+$user = 'root';
+$password = 'mysql';
+
+// Konexioa sortu
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  // Habilitar modo de errores
+} catch (PDOException $e) {
+    die("Errorea konexioan: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="eu">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AlaiktoMUGI - Hasiera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        th,
+        td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #ddd;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2em;
+        }
+    </style>
 </head>
 
 <body>
-    <p>Hello, World!</p>
-    <p>PHP Version: <?php echo phpversion(); ?></p>
-    <p>Server Name: <?php echo $_SERVER['SERVER_NAME']; ?></p>
-    <p>Server Address: <?php echo $_SERVER['SERVER_ADDR']; ?></p>
-    <p>Server Port: <?php echo $_SERVER['SERVER_PORT']; ?></p>
-    <p>Request Method: <?php echo $_SERVER['REQUEST_METHOD']; ?></p>
 
-    <a href="Web/interface/bezeroak/froga.html">Go to bezeroak</a>
-    <a href="Web/interface/gidariak/froga.html">Go to gidariak</a>
+    <h1>Ongi etorri AlaiktoMUGI sistemara</h1>
 
+    <h2>Bezeroak</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Izena</th>
+            <th>Abizena</th>
+            <th>Emaila</th>
+        </tr>
+        <?php
+        $stmt = $pdo->prepare("SELECT * FROM bezeroa");
+        $stmt->execute();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr>
+                    <td>{$row['id_bezeroa']}</td>
+                    <td>{$row['izena']}</td>
+                    <td>{$row['abizena']}</td>
+                    <td>{$row['emaila']}</td>
+                    <td>{$row['helbidea']}</td>
+                    <td>{$row['telefonoa']}</td>
+                    <td>{$row['pasahitza']}</td>
+                    <td>{$row['nan']}</td>
+                  </tr>";
+        }
+        ?>
+    </table>
 </body>
 
 </html>
