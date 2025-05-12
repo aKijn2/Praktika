@@ -24,9 +24,10 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
-      - PMA_HOST=tu-host-remoto-mysql
+      - PMA_HOST=host.docker.internal
       - PMA_PORT=3306
-      - UPLOAD_LIMIT=100M
+      - PMA_USER=root
+      - PMA_PASSWORD=mysql
     ports:
       - "8080:80"
     depends_on:
