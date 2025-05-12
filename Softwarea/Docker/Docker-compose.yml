@@ -1,9 +1,9 @@
 version: '3.8'
 
-# Kontedenoreak edukiko dituen zerbitzuak
+# Kontenedoreak edukiko dituen zerbitzuak
 services:
 
-# Web zerbitzuarentzeko nginx erabiliko dugu
+  # Web zerbitzuarentzeko nginx erabiliko dugu
   web:
     image: nginx:latest
     container_name: nginx_web
@@ -15,7 +15,7 @@ services:
     depends_on:
       - php
 
-# PHP zerbitzuarentzeko PHP-FPM erabiliko dugu
+  # PHP zerbitzuarentzeko PHP-FPM erabiliko dugu
   php:
     image: php:8.2-fpm
     container_name: php_fpm
@@ -24,7 +24,7 @@ services:
     expose:
       - "9000"
 
-# PHPMyAdmin zerbitzuarentzeko phpmyadmin erabiliko dugu
+  # PHPMyAdmin zerbitzuarentzeko phpmyadmin erabiliko dugu
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -37,6 +37,16 @@ services:
       - "8080:80"
     depends_on:
       - php
+
+  # MySQL zerbitzuarentzeko MySQL erabiliko dugu
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql  # Ezarri root erabiltzailearentzako pasahitza
+      MYSQL_DATABASE: alaiktomugi  # Datu Basearen izena
+    ports:
+      - "3307:3306"
 
 networks:
   default:
