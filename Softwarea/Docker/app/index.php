@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="assets/css/main.css" />
   </head>
   <body>
+
     <!-- Header -->
     <header id="header" class="alt">
       <div class="inner">
@@ -19,6 +20,7 @@
 
     <!-- Wrapper -->
     <div id="wrapper">
+      
       <!-- Banner -->
       <section id="intro" class="main">
         <span class="icon fa-car major"></span>
