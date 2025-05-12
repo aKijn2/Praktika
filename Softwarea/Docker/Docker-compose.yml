@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    container_name: nginx_web
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./app:/var/www/html
+    depends_on:
+      - php
+
+  php:
+    image: php:8.2-fpm
+    container_name: php_fpm
+    volumes:
+      - ./app:/var/www/html
+    expose:
+      - "9000"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PMA_HOST=tu-host-remoto-mysql
+      - PMA_PORT=3306
+      - UPLOAD_LIMIT=100M
+    ports:
+      - "8080:80"
+    depends_on:
+      - php
+
+networks:
+  default:
+    driver: bridge
