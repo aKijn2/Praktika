@@ -58,3 +58,14 @@ body {
   text-decoration: none;
   color: black;
 }
+
+.error-message {
+  color: #000000;
+  padding: 15px;
+  width: fit-content;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 32em;
+  position: absolute;
+}
