@@ -1,0 +1,72 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.Register-container {
+  background: #fff;
+  padding: 4em;
+  border-radius: 8px;
+  box-shadow: -20px -16px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding-left: 2.5em;
+  border: 1px solid black;
+}
+
+.Register-container h2 {
+  margin-bottom: 3em;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.Register-btn {
+  width: 24em;
+  padding: 13px;
+  background-color: rgba(255, 255, 255, 0);
+  color: black;
+  border: none;
+  border-radius: 4px;
+  outline: black 1px solid;
+  cursor: pointer;
+  margin-top: 2em;
+}
+
+.Register-btn:hover {
+  background-color: rgb(255, 253, 132);
+}
+
+.register-href {
+  text-decoration: none;
+  color: black;
+}
+
+.error-message {
+  color: #000000;
+  padding: 15px;
+  width: fit-content;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 32em;
+  position: absolute;
+}
