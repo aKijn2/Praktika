@@ -15,6 +15,7 @@ body {
   box-shadow: -20px -16px 6px rgba(0, 0, 0, 0.1);
   width: 300px;
   padding-left: 2.5em;
+  border: 1px solid black;
 }
 
 .login-container h2 {

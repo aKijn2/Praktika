@@ -10,6 +10,9 @@ session_start(); // Iniciamos la sesión
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/erreserbatu.css" />
+  <style>
+  </style>
 </head>
 
 <body>
@@ -38,6 +41,8 @@ session_start(); // Iniciamos la sesión
       </p>
       <ul class="actions">
         <li><a href="#" class="button big">Eskatu orain</a></li>
+        <br>
+        <li><a href="#">COMING SOON</a></li>
       </ul>
     </section>
 
@@ -54,6 +59,8 @@ session_start(); // Iniciamos la sesión
         </p>
         <ul class="actions">
           <li><a href="#" class="button">Gehiago</a></li>
+          <br>
+          <li><a href="#">COMING SOON</a></li>
         </ul>
       </article>
 
@@ -67,8 +74,28 @@ session_start(); // Iniciamos la sesión
         </p>
         <ul class="actions">
           <li><a href="#" class="button">Ezagutu</a></li>
+          <br>
+          <li><a href="#">COMING SOON</a></li>
         </ul>
       </article>
+
+      <!-- Modal para reservar -->
+      <div id="reservaModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Erreserbatu zure bidaia</h2>
+          <form action="erreserbatu.php" method="POST">
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required min="<?= date('Y-m-d'); ?>">
+
+            <label for="ordua">Ordua:</label>
+            <input type="time" id="ordua" name="ordua" required>
+
+            <button type="submit" class="button">Bidali</button>
+          </form>
+        </div>
+      </div>
+
 
       <article class="item">
         <header>
@@ -93,6 +120,8 @@ session_start(); // Iniciamos la sesión
         </p>
         <ul class="actions">
           <li><a href="#" class="button">Jarri harremanetan</a></li>
+          <br>
+          <li><a href="#">COMING SOON</a></li>
         </ul>
       </article>
     </section>
@@ -133,6 +162,8 @@ session_start(); // Iniciamos la sesión
   <script src="assets/js/skel.min.js"></script>
   <script src="assets/js/util.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/erreserbatu.js"></script>
+
 </body>
 
 </html>
