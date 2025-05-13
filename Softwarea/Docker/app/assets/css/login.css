@@ -14,7 +14,7 @@ body {
   border-radius: 8px;
   box-shadow: -20px -16px 6px rgba(0, 0, 0, 0.1);
   width: 300px;
-  padding-left: 2em;
+  padding-left: 2.5em;
 }
 
 .login-container h2 {
@@ -47,9 +47,14 @@ body {
   border-radius: 4px;
   outline: black 1px solid;
   cursor: pointer;
-  margin-top: 5em;
+  margin-top: 2em;
 }
 
 .login-btn:hover {
   background-color: rgb(255, 198, 198);
+}
+
+.register-href {
+  text-decoration: none;
+  color: black;
 }

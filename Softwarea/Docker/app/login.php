@@ -1,56 +1,58 @@
 <?php
-// Comprobamos si ya está logueado el usuario. Si es así, lo redirigimos a la página de inicio.
 session_start();
 
-// Verifica si ya hay una sesión activa, redirige al usuario si está logueado
-if (isset($_SESSION['user_id'])) {
-    header("Location: frogak2_saioaHasita.php");
-    exit();
-}
+$host = "db"; // Docker-compatible
+$db = "alaiktomugi";
+$user = "root";
+$pass = "mysql";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Datos de conexión a la base de datos
-    $host = 'localhost';
-    $dbname = 'alaiktomugi';
-    $user = 'root';
-    $password = 'mysql';
+try {
+    // Conexión
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Crear la conexión
-    try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  // Habilitar modo de errores
-    } catch (PDOException $e) {
-        die("Error en la conexión: " . $e->getMessage());
-    }
+    // Verificar si se enviaron los datos por POST
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Obtener los datos del formulario
+        $emaila = $_POST['username'] ?? '';
+        $pasahitza = $_POST['password'] ?? '';
 
-    // Obtener los datos del formulario
-    $nan = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Consulta SQL para verificar las credenciales
-    $stmt = $pdo->prepare("SELECT * FROM bezeroa WHERE nan = :nan AND pasahitza = :password");
-    $stmt->bindParam(':nan', $nan);
-    $stmt->bindParam(':password', $password);
-    $stmt->execute();
-
-    // Si se encuentran las credenciales correctas
-    if ($stmt->rowCount() > 0) {
-        // Obtener los datos del usuario
+        // Verificar en la tabla bezeroa
+        $stmt = $pdo->prepare("SELECT * FROM bezeroa WHERE emaila = ? AND pasahitza = ?");
+        $stmt->execute([$emaila, $pasahitza]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Iniciar la sesión
-        $_SESSION['user_id'] = $user['id_bezeroa'];
-        $_SESSION['user_nan'] = $user['nan'];  // Guardamos el NIF (Nan) del usuario para sesión
+        if ($user) {
+            $_SESSION['emaila'] = $user['emaila'];
+            $_SESSION['rol'] = 'bezeroa';
+            header("Location: index.html");
+            exit;
+        }
 
-        // Redirigir al usuario a la página frogak2_saioaHasita.php
-        header("Location: frogak2_saioaHasita.php");
-        exit();
+        // Verificar en la tabla gidaria
+        $stmt = $pdo->prepare("SELECT * FROM gidaria WHERE emaila = ? AND pasahitza = ?");
+        $stmt->execute([$emaila, $pasahitza]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            $_SESSION['emaila'] = $user['emaila'];
+            $_SESSION['rol'] = 'gidaria';
+            header("Location: index.php");
+            exit;
+        }
+
+        // Si no coincide
+        echo "Erabiltzailea edo pasahitza ez da zuzena.";
     } else {
-        // Si las credenciales son incorrectas, mostrar mensaje de error
-        $error = "Nan edo pasahitza okerra!";
+        // Si accedieron directamente sin enviar datos
+        echo "";
     }
+
+} catch (PDOException $e) {
+    die("Errorea konexioan: " . $e->getMessage());
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -65,18 +67,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="login-container">
         <h2>SAIOA HASI</h2>
-        
-        <?php if (isset($error)) { echo '<p style="color:red;">' . $error . '</p>'; } ?>
 
         <form action="login.php" method="POST">
             <div class="form-group">
-                <label for="username">Erabiltzailea (NAN)</label>
+                <label for="username">Erabiltzailea (emaila)</label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
                 <label for="password">Pasahitza</label>
                 <input type="password" id="password" name="password" required>
             </div>
+            <div class="form-group">
+                <label for="password">
+                    <a href="register.php" class="register-href">Berria nahiz, sortu kontua.</a>
+                </label>
+            </div>
+
             <button type="submit" class="login-btn">HASI</button>
         </form>
     </div>
