@@ -38,6 +38,9 @@ session_start(); // Iniciamos la sesión
           <label for="helmuga">Helmuga:</label>
           <input type="text" id="helmuga" name="helmuga" required>
 
+          <label for="pertsona_kopurua">Pertsona kopurua:</label>
+          <input type="number" id="pertsona_kopurua" name="pertsona_kopurua" required min="1">
+
           <label for="data">Data:</label>
           <input type="date" id="data" name="data" required min="<?= date('Y-m-d'); ?>">
 

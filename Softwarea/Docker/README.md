@@ -1,12 +1,15 @@
-# TODO 
+# 🚧 TODO
 
-1. Bezeroak bidaia eskatzeko
-   Jatorria, helmuga, data eta ordua automatikoki ezartu.
+- El conductor puede ver todos los viajes y elegirá uno. Cuando elija uno, en el viaje se le asignará el ID del conductor.
 
+- El conductor puede elegir el estado del viaje. puede cambiarlo a "pendiente", "bidaian" o "bidaia amaituta".
 
-## KONTUA EDUKI
+# 🛠️ TO FIX
 
-1. Gidariak ezarriko du egoera bidaia tablan.
-2. Gidariak ikusiko ditu bidai guztiak eta bat aukeratzerakoan bidaia taulan
-   ezarri gidaria_id_gidaria berea.
+- Cuando inicias sesión te envía a una página para poner la verificación de 2FA... No funciona y se logea sin que pongas el 2FA.
 
+---
+
+## ⚠️ IMPORTANTE
+
+- El conductor puede ver todos los viajes y elegirá uno. Cuando elija uno, en el viaje se le asignará el ID del conductor.

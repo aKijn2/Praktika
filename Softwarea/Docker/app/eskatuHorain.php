@@ -30,17 +30,18 @@ try {
     // 3. Lortu formularioaren datuak
     $jatorria = $_POST['jatorria'] ?? null;
     $helmuga = $_POST['helmuga'] ?? null;
+    $pertsona_kopurua = $_POST['pertsona_kopurua'] ?? null;
     $data = $_POST['data'] ?? null;
     $ordua = $_POST['ordua'] ?? null;
 
-    if (!$jatorria || !$helmuga || !$data || !$ordua) {
+    if (!$jatorria || !$helmuga || !$pertsona_kopurua || !$data || !$ordua) {
         die("Eremu guztiak bete behar dira.");
     }
 
     // 4. Sartu bidaia berria (sin erreserba_id_erreserba eta sin gidaria oraindik)
-    $stmt = $pdo->prepare("INSERT INTO bidaia (jatorria, helmuga, data, ordua, egoera)
-                           VALUES (?, ?, ?, ?, 'pendiente')");
-    $stmt->execute([$jatorria, $helmuga, $data, $ordua]);
+    $stmt = $pdo->prepare("INSERT INTO bidaia (jatorria, helmuga, data, ordua, egoera, pertsona_kopurua)
+                           VALUES (?, ?, ?, ?, 'pendiente', ?)");
+    $stmt->execute([$jatorria, $helmuga, $data, $ordua, $pertsona_kopurua]);
 
     // 5. Bideratu berriro index.php-era
     header("Location: index.php?eskatu_success=1");
