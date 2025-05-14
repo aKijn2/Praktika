@@ -86,7 +86,7 @@ session_start(); // Iniciamos la sesión
           <a href="#"><img src="images/1.jpg" alt="" /></a>
           <h3>Garraio pertsonalizatua</h3>
         </header>
-        <p>Bezero bakoitza berezia da guretzat. Zure beharretara egokitzen gara.</p>
+        <p>Bezero bakoitza berezia da guretzat!</p>
         <ul class="actions">
           <li><a href="#" class="button">Gehiago</a></li>
         </ul>
@@ -119,20 +119,29 @@ session_start(); // Iniciamos la sesión
           <a href="#"><img src="images/4.jpg" alt="" /></a>
           <h3>24/7 eskuragarri</h3>
         </header>
-        <p>Zure mugikortasuna bermatzeko eguneko 24 orduetan lanean.</p>
+        <p>Zure mugikortasuna bermatzeko eguneko 24 orduetan lanean gaude!</p>
         <ul class="actions">
           <li><a href="#" class="button">Jarri harremanetan</a></li>
         </ul>
       </article>
     </section>
 
+    <!-- BIDAIEN HISTORIALA COMING SOON -->
+    <section id="intro" class="main">
+      <h2>ZUK EGINDAKO BIDAIEN HISTORIALA</h2>
+      <p>COMING SOON</p>
+      <ul class="actions">
+        <li><a href="#" class="button big">BORRATU HISTORIALA</a></li>
+      </ul>
+    </section>
+
     <!-- CTA -->
     <section id="intro" class="main">
-      <h2>HASI SAIOA ETA ESKATU TAXIA!</h2>
+      <h2>HASI SAIOA ETA ESKATU TAXIA</h2>
       <p>AlaiktoMUGI-rekin zure hurrengo bidaia azkar eta erraz antolatu.</p>
       <ul class="actions">
         <?php if (isset($_SESSION['emaila'])): ?>
-          <li><a href="#" class="button big">SAIOA HASITA</a></li>
+          <li><a href="#" class="button big">ITXI SAIOA</a></li>
         <?php else: ?>
           <li><a href="login.php" class="button big">SAIOA HASI</a></li>
         <?php endif; ?>
