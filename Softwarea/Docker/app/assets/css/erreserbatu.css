@@ -9,6 +9,7 @@
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
+  padding-bottom: 5em;
 }
 
 .modal-content {
@@ -18,6 +19,8 @@
   border-radius: 10px;
   width: 35em;
   text-align: center;
+  box-shadow: -19px -20px 30px 4px rgba(0, 0, 0, 0.3);
+  border: 3px solid black;
 }
 
 .modal-content input {
