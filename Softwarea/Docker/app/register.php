@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ':emaila' => $email,
             ':helbidea' => $address,
             ':telefonoa' => $phone,
-            ':pasahitza' => password_hash($password, PASSWORD_DEFAULT),
+            ':pasahitza' => $password,  // Almacenar la contraseña sin encriptar
             ':nan' => $nan
         ]);
 
