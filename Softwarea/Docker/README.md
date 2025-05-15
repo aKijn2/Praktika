@@ -9,6 +9,7 @@
 # 🛠️ TO FIX
 
 - Cuando inicias sesión te envía a una página para poner la verificación de 2FA... NO FUNCIONA.
+- En el index.php si no estas iniciado sesion y le das a erreserbatu al implementar la informacion te lleve a iniciar sesion.
 
 ---
 
