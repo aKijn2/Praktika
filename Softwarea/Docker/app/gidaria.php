@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Europe/Madrid');
 
 if (!isset($_SESSION['emaila']) || $_SESSION['rol'] !== 'gidaria') {
     header("Location: index.php");
@@ -16,38 +17,56 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    //  1. Si hay POST para actualizar egoera
+    // ✅ Manejo del formulario de cambio de estado
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_bidaia'], $_POST['egoera'])) {
         $id_bidaia = $_POST['id_bidaia'];
         $egoera_berria = $_POST['egoera'];
 
+        // Actualizar estado en bidaia
         $stmt = $pdo->prepare("UPDATE bidaia SET egoera = ? WHERE id_bidaia = ?");
         $stmt->execute([$egoera_berria, $id_bidaia]);
 
-        // Redirigir para evitar reenvío
+        // Si se cambió a 'amaituta', guardar en historikoa
+        if ($egoera_berria === 'amaituta') {
+            // Obtener datos del viaje
+            $stmt = $pdo->prepare("SELECT jatorria, helmuga FROM bidaia WHERE id_bidaia = ?");
+            $stmt->execute([$id_bidaia]);
+            $bidaia = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($bidaia) {
+                $data = date('Y-m-d');
+                $ordua = date('H:i:s');
+
+                $stmt = $pdo->prepare("INSERT INTO historikoa (amaiera_data, amaiera_ordua, jatorria, helmuga, bidaia_id_bidaia)
+                                       VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$data, $ordua, $bidaia['jatorria'], $bidaia['helmuga'], $id_bidaia]);
+            }
+        }
+
+        // Redirigir para evitar reenvío al refrescar
         header("Location: gidaria.php");
         exit();
     }
 
-    //  2. Obtener ID del gidaria
+    // ✅ Obtener ID del gidaria desde la sesión
     $stmt = $pdo->prepare("SELECT id_gidaria FROM gidaria WHERE emaila = ?");
     $stmt->execute([$_SESSION['emaila']]);
     $gidaria = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    //  3. Viajes pendientes
+    // ✅ Obtener viajes pendientes (sin asignar)
     $stmt = $pdo->prepare("SELECT * FROM bidaia WHERE egoera = 'pendiente' AND gidaria_id_gidaria IS NULL");
     $stmt->execute();
     $bidaiak = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    //  4. Viajes asignados al gidaria
+    // ✅ Obtener viajes asignados a este gidaria que NO estén amaituta
     $stmt = $pdo->prepare("SELECT * FROM bidaia WHERE gidaria_id_gidaria = ? AND egoera != 'amaituta'");
     $stmt->execute([$gidaria['id_gidaria']]);
-
     $bidaiak_onartuta = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Errorea: " . $e->getMessage());
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="eu">
@@ -188,8 +207,8 @@ try {
                                     <input type="hidden" name="id_bidaia" value="<?= $bidaia['id_bidaia'] ?>">
                                     <select name="egoera" onchange="this.form.submit()">
                                         <option value="onartuta" <?= $bidaia['egoera'] === 'onartuta' ? 'selected' : '' ?>>Onartuta</option>
-                                        <option value="amaituta" <?= $bidaia['egoera'] === 'amaituta' ? 'selected' : '' ?>>Amaituta</option>
                                         <option value="bidaian" <?= $bidaia['egoera'] === 'bidaian' ? 'selected' : '' ?>>Bidaian</option>
+                                        <option value="amaituta" <?= $bidaia['egoera'] === 'amaituta' ? 'selected' : '' ?>>Amaituta</option>
                                     </select>
                                 </form>
                             </td>
