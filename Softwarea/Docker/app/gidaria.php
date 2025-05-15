@@ -4,6 +4,14 @@ session_start();
 if (!isset($_SESSION['emaila']) || $_SESSION['rol'] !== 'gidaria') {
     header("Location: index.php");
     exit();
+
+    if (isset($_GET['logout'])) {
+        session_unset();
+        session_destroy();
+        header("Location: index.php");
+        exit();
+    }
+
 }
 
 // Conexión a la base de datos
@@ -93,7 +101,7 @@ try {
             <p>Dena bukatuta baldin baduzu, sahia amaitzeko prest zaude!</p>
             <ul class="actions">
                 <?php if (isset($_SESSION['emaila'])): ?>
-                    <li><a href="logout.php" class="button big">ITXI SAIOA</a></li>
+                    <li><a href="index.php?logout=true" class="button big">ITXI SAIOA</a></li>
                 <?php else: ?>
                     <li><a href="login.php" class="button big">SAIOA HASI</a></li>
                 <?php endif; ?>
