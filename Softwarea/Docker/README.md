@@ -1,12 +1,14 @@
 # 🚧 TODO
 
+- Cuando le das a itxi saioa tanto al cliente como tambien cuando el conductor le da a itxi saioa, se le cierre sesion.
 - El conductor puede ver todos los viajes y elegirá uno. Cuando elija uno, en el viaje se le asignará el ID del conductor.
 - El conductor puede elegir el estado del viaje. puede cambiarlo a "pendiente", "bidaian" o "bidaia amaituta".
+- Cuando el viaje termine se guardara los datos del viaje en el historial del conductor.
+- Cuando elviaje termine se guardara los datos del viaje en el historial del cliente.
 
 # 🛠️ TO FIX
 
-- Cuando inicias sesión te envía a una página para poner la verificación de 2FA... No funciona y se logea sin que pongas el 2FA.
-- Cuando estas iniciado sesion le des a itxi saioa se cierre la ssesion.
+- Cuando inicias sesión te envía a una página para poner la verificación de 2FA... NO FUNCIONA.
 
 ---
 

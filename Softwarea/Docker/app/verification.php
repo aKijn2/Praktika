@@ -14,9 +14,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verificamos que el código ingresado sea correcto
     if ($codigo_ingresado == $_SESSION['verification_code']) {
-        // El código es correcto, redirigimos al usuario a la página principal
+        // El código es correcto
         $_SESSION['verified'] = true;
-        header("Location: index.php");
+        unset($_SESSION['verification_code']); // Eliminamos el código de sesión
+
+        // Redirigimos según el rol
+        if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'gidaria') {
+            header("Location: gidaria.php");
+        } else {
+            header("Location: index.php"); // Por defecto los bezeroa van a index.php
+        }
         exit();
     } else {
         // El código es incorrecto
@@ -24,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>

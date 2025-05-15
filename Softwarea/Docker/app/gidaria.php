@@ -1,5 +1,34 @@
 <?php
-session_start(); // Iniciamos la sesión
+session_start();
+
+if (!isset($_SESSION['emaila']) || $_SESSION['rol'] !== 'gidaria') {
+    header("Location: index.php");
+    exit();
+}
+
+// Conexión a la base de datos
+$host = "db";
+$db = "alaiktomugi";
+$user = "root";
+$pass = "mysql";
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $pdo->prepare("SELECT id_gidaria FROM gidaria WHERE emaila = ?");
+    $stmt->execute([$_SESSION['emaila']]);
+    $gidaria = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $stmt = $pdo->prepare("SELECT * FROM bidaia WHERE egoera = 'pendiente' AND gidaria_id_gidaria IS NULL");
+    $stmt->execute();
+    $bidaiak = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("Errorea: " . $e->getMessage());
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="eu">
@@ -9,6 +38,7 @@ session_start(); // Iniciamos la sesión
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/gidariak/main.css" />
+    <link rel="stylesheet" href="assets/css/gidariak/bidaiakIkusi.css" />
 </head>
 
 <body>
@@ -23,29 +53,38 @@ session_start(); // Iniciamos la sesión
 
     <!-- Wrapper -->
     <div id="wrapper">
+
         <!-- Items -->
         <section class="main items">
             <article class="item">
                 <header>
-                    <a href="#"><img src="#" alt="" /></a>
                     <h3>BIDAIAK IKUSI</h3>
                 </header>
                 <p>Ikusi dauden bidaiak.</p>
                 <ul class="actions">
-                    <li><a href="#" class="button">IREKI</a></li>
+                    <li><a href="#" class="button"
+                            onclick="document.getElementById('bidaiaModal').style.display='flex'">IREKI</a></li>
                 </ul>
             </article>
 
             <article class="item">
                 <header>
-                    <a href="#"><img src="#" alt="" /></a>
                     <h3>NERE BIDAIAK</h3>
                 </header>
                 <p>Ikusi autatutako bidaiak.</p>
                 <ul class="actions">
-                    <li><a href="#" class="button">IRKEI</a></li>
+                    <li><a href="#" class="button">IREKI</a></li>
                 </ul>
             </article>
+        </section>
+
+        <!-- BIDAIEN HISTORIALA -->
+        <section id="intro" class="main">
+            <h2>ZUK EGINDAKO BIDAIEN HISTORIALA</h2>
+            <p>COMING SOON</p>
+            <ul class="actions">
+                <li><a href="#" class="button big">BORRATU HISTORIALA</a></li>
+            </ul>
         </section>
 
         <!-- CTA -->
@@ -54,17 +93,58 @@ session_start(); // Iniciamos la sesión
             <p>Dena bukatuta baldin baduzu, sahia amaitzeko prest zaude!</p>
             <ul class="actions">
                 <?php if (isset($_SESSION['emaila'])): ?>
-                    <li><a href="#" class="button big">ITXI SAIOA</a></li>
+                    <li><a href="logout.php" class="button big">ITXI SAIOA</a></li>
                 <?php else: ?>
                     <li><a href="login.php" class="button big">SAIOA HASI</a></li>
                 <?php endif; ?>
             </ul>
         </section>
+    </div>
 
+    <!-- Bidaia Modal -->
+    <div id="bidaiaModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close"
+                onclick="document.getElementById('bidaiaModal').style.display='none'">&times;</span>
+            <h2>Bidaia Aukerak</h2>
+            <table class="bidaia-table">
+                <thead>
+                    <tr>
+                        <th>Jatorria</th>
+                        <th>Helmuga</th>
+                        <th>Data</th>
+                        <th>Ordua</th>
+                        <th>Pertsonak</th>
+                        <th>Onartu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($bidaiak as $bidaia): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($bidaia['jatorria']) ?></td>
+                            <td><?= htmlspecialchars($bidaia['helmuga']) ?></td>
+                            <td><?= $bidaia['data'] ?></td>
+                            <td><?= $bidaia['ordua'] ?></td>
+                            <td><?= $bidaia['pertsona_kopurua'] ?></td>
+                            <td>
+                                <form method="POST" action="onartu_bidaia.php">
+                                    <input type="hidden" name="id_bidaia" value="<?= $bidaia['id_bidaia'] ?>">
+                                    <input type="checkbox" name="onartu" onchange="this.form.submit()">
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    </div>
     </div>
 
     <div class="copyright">
-        AlaiktoMUGI © 2025 - Webgunea garatua <a href="https://templated.co/">Achraf Allach Chahboun - Iker Hernández
+        AlaiktoMUGI © 2025 - Webgunea garatua <a href="#">Achraf Allach Chahboun - Iker Hernández
             Navas</a>
     </div>
 
@@ -73,6 +153,7 @@ session_start(); // Iniciamos la sesión
     <script src="assets/js/skel.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/gidariak/bidaiakIkusi.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 <?php
-session_start(); // Iniciamos la sesión
+session_start();
 
 // Configuración de la base de datos
 $host = "db";
@@ -7,82 +7,78 @@ $db = "alaiktomugi";
 $user = "root";
 $pass = "mysql";
 $error = "";
-$verification_code = null; // Para almacenar el código de verificación
 
 // Conexión a la base de datos
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Si el formulario se envía por POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $emaila = $_POST['username'] ?? '';
         $pasahitza = $_POST['password'] ?? '';
 
-        // Verificación en la tabla 'bezeroa' (clientes)
+        // Intentamos encontrar al usuario en la tabla bezeroa
         $stmt = $pdo->prepare("SELECT * FROM bezeroa WHERE emaila = ? AND pasahitza = ?");
         $stmt->execute([$emaila, $pasahitza]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $bezeroa = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
-            // Usuario encontrado, creamos el código de verificación
-            $_SESSION['emaila'] = $user['emaila'];
+        if ($bezeroa) {
+            $_SESSION['emaila'] = $bezeroa['emaila'];
             $_SESSION['rol'] = 'bezeroa';
             $verification_code = rand(100000, 999999);
             $_SESSION['verification_code'] = $verification_code;
 
-            // Enviamos el correo de verificación
-            enviar_mail($user['emaila'], $verification_code);
-
-            // Redirigimos a la página de verificación
+            enviar_mail($bezeroa['emaila'], $verification_code);
             header("Location: verification.php");
             exit;
         }
 
-        // Verificación en la tabla 'gidaria' (administradores)
+        // Si no se encuentra como bezeroa, buscamos como gidaria
         $stmt = $pdo->prepare("SELECT * FROM gidaria WHERE emaila = ? AND pasahitza = ?");
         $stmt->execute([$emaila, $pasahitza]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $gidaria = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
-            // Usuario encontrado, creamos el código de verificación
-            $_SESSION['emaila'] = $user['emaila'];
+        if ($gidaria) {
+            $_SESSION['emaila'] = $gidaria['emaila'];
             $_SESSION['rol'] = 'gidaria';
             $verification_code = rand(100000, 999999);
             $_SESSION['verification_code'] = $verification_code;
 
-            // Enviamos el correo de verificación
-            enviar_mail($user['emaila'], $verification_code);
-
-            // Redirigimos a la página de verificación
+            enviar_mail($gidaria['emaila'], $verification_code);
             header("Location: verification.php");
             exit;
         }
 
-        $error = "Erabiltzailea edo pasahitza ez da zuzena."; // Usuario o contraseña incorrectos
+        // Si no es bezeroa ni gidaria
+        $error = "Erabiltzailea edo pasahitza ez da zuzena.";
     }
+
 } catch (PDOException $e) {
-    $error = "Errorea konexioan: " . $e->getMessage(); // Error en la conexión
+    $error = "Errorea konexioan: " . $e->getMessage();
 }
 
-// Función para enviar el correo
-function enviar_mail($to, $codigo_verificacion) {
+// ✅ Funtzioa: kodea bidaltzeko
+function enviar_mail($to, $kodea)
+{
     $subject = "Kodigoaren egiaztapena - AlaiktoMUGI";
-    $txt = "Zure kodea: " . $codigo_verificacion . "\nSartu kodea saioa hasteko.";
-    $headers = "From: ikertolosaldealhi@gmail.com" . "\r\n" .
-    "CC: 1ag3.ikerhern@tolosaldealh.eus";
+    $txt = "Zure kodea: " . $kodea . "\nSartu kodea saioa hasteko.";
+    $headers = "From: ikertolosaldealhi@gmail.com\r\n" .
+        "CC: 1ag3.ikerhern@tolosaldealh.eus";
 
-    mail($to, $subject, $txt, $headers);  // Utilizamos la función mail de PHP
+    mail($to, $subject, $txt, $headers);
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="eu">
+
 <head>
     <meta charset="UTF-8">
     <title>Login - AlaiktoMUGI</title>
     <link rel="stylesheet" href="assets/css/login.css" />
 </head>
+
 <body>
     <?php if (!empty($error)): ?>
         <div class="error-message"><?= htmlspecialchars($error) ?></div>
@@ -109,4 +105,5 @@ function enviar_mail($to, $codigo_verificacion) {
         </form>
     </div>
 </body>
+
 </html>
