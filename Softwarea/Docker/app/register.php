@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!DOCTYPE html>
 <html lang="eu">
+
 <head>
     <meta charset="UTF-8">
     <title>Register - AlaiktoMUGI</title>
@@ -65,7 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <style>
         /* Estilos para el popup */
         .popup {
-            display: none; /* Ocultar por defecto */
+            display: none;
+            /* Ocultar por defecto */
             position: fixed;
             top: 50%;
             left: 50%;
@@ -84,6 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     </style>
 </head>
+
 <body>
     <div class="Register-container">
         <h2>KONTUA SORTU</h2>
@@ -99,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 document.getElementById('popup').style.display = 'block';
 
                 // Redirigir después de 3.5 segundos
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.href = "login.php"; // Redirigir a la página de login
                 }, 3500);
             </script>
@@ -110,12 +113,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div style="flex: 1;">
                     <div class="form-group">
                         <label for="username">Izena</label>
-                        <input type="text" id="username" name="username" required value="<?= htmlspecialchars($username) ?>">
+                        <input type="text" id="username" name="username" required
+                            value="<?= htmlspecialchars($username) ?>">
                     </div>
 
                     <div class="form-group">
                         <label for="surname">Abizena</label>
-                        <input type="text" id="surname" name="surname" required value="<?= htmlspecialchars($surname) ?>">
+                        <input type="text" id="surname" name="surname" required
+                            value="<?= htmlspecialchars($surname) ?>">
                     </div>
 
                     <div class="form-group">
@@ -127,17 +132,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div style="flex: 1;">
                     <div class="form-group">
                         <label for="phone">Telefonoa</label>
-                        <input type="text" id="phone" name="phone" required maxlength="9" value="<?= htmlspecialchars($phone) ?>">
+                        <input type="text" id="phone" name="phone" required maxlength="9"
+                            value="<?= htmlspecialchars($phone) ?>">
                     </div>
 
                     <div class="form-group">
                         <label for="nan">NAN</label>
-                        <input type="text" id="nan" name="nan" placeholder="Aukerakoa" value="<?= htmlspecialchars($nan) ?>">
+                        <input type="text" id="nan" name="nan" placeholder="Aukerakoa"
+                            value="<?= htmlspecialchars($nan) ?>">
                     </div>
 
                     <div class="form-group">
                         <label for="address">Helbidea</label>
-                        <input type="text" id="address" name="address" required value="<?= htmlspecialchars($address) ?>">
+                        <input type="text" id="address" name="address" required
+                            value="<?= htmlspecialchars($address) ?>">
                     </div>
                 </div>
             </div>
@@ -162,4 +170,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="assets/js/erregistroa/pasahitza_balidazioa.js"></script>
 
 </body>
+
 </html>

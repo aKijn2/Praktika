@@ -14,10 +14,10 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $emaila = $_POST['username'] ?? '';
-        $pasahitza = $_POST['password'] ?? '';
+        $emaila = trim($_POST['username'] ?? '');
+        $pasahitza = trim($_POST['password'] ?? '');
 
-        // Intentamos encontrar al usuario en la tabla bezeroa
+        // Buscar como bezeroa
         $stmt = $pdo->prepare("SELECT * FROM bezeroa WHERE emaila = ? AND pasahitza = ?");
         $stmt->execute([$emaila, $pasahitza]);
         $bezeroa = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -25,15 +25,11 @@ try {
         if ($bezeroa) {
             $_SESSION['emaila'] = $bezeroa['emaila'];
             $_SESSION['rol'] = 'bezeroa';
-            $verification_code = rand(100000, 999999);
-            $_SESSION['verification_code'] = $verification_code;
-
-            enviar_mail($bezeroa['emaila'], $verification_code);
-            header("Location: verification.php");
-            exit;
+            header("Location: index.php");
+            exit();
         }
 
-        // Si no se encuentra como bezeroa, buscamos como gidaria
+        // Buscar como gidaria
         $stmt = $pdo->prepare("SELECT * FROM gidaria WHERE emaila = ? AND pasahitza = ?");
         $stmt->execute([$emaila, $pasahitza]);
         $gidaria = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -41,33 +37,19 @@ try {
         if ($gidaria) {
             $_SESSION['emaila'] = $gidaria['emaila'];
             $_SESSION['rol'] = 'gidaria';
-            $verification_code = rand(100000, 999999);
-            $_SESSION['verification_code'] = $verification_code;
-
-            enviar_mail($gidaria['emaila'], $verification_code);
-            header("Location: verification.php");
-            exit;
+            header("Location: gidaria.php");
+            exit();
         }
 
-        // Si no es bezeroa ni gidaria
+        // Si no coincide con ningún usuario
         $error = "Erabiltzailea edo pasahitza ez da zuzena.";
     }
 
 } catch (PDOException $e) {
     $error = "Errorea konexioan: " . $e->getMessage();
 }
-
-// ✅ Funtzioa: kodea bidaltzeko
-function enviar_mail($to, $kodea)
-{
-    $subject = "Kodigoaren egiaztapena - AlaiktoMUGI";
-    $txt = "Zure kodea: " . $kodea . "\nSartu kodea saioa hasteko.";
-    $headers = "From: ikertolosaldealhi@gmail.com\r\n" .
-        "CC: 1ag3.ikerhern@tolosaldealh.eus";
-
-    mail($to, $subject, $txt, $headers);
-}
 ?>
+
 
 
 <!DOCTYPE html>
