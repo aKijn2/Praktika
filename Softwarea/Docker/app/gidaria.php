@@ -62,6 +62,17 @@ try {
     $stmt = $pdo->prepare("SELECT * FROM bidaia WHERE gidaria_id_gidaria = ? AND egoera != 'amaituta'");
     $stmt->execute([$gidaria['id_gidaria']]);
     $bidaiak_onartuta = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // ✅ Obtener historiala de viajes amaituta para este gidaria
+    $stmt = $pdo->prepare("
+    SELECT h.jatorria, h.helmuga, h.amaiera_data 
+    FROM historikoa h
+    JOIN bidaia b ON h.bidaia_id_bidaia = b.id_bidaia
+    WHERE b.gidaria_id_gidaria = ?
+    ORDER BY h.amaiera_data DESC
+");
+    $stmt->execute([$gidaria['id_gidaria']]);
+    $historiala = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Errorea: " . $e->getMessage());
 }
@@ -77,6 +88,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/gidariak/main.css" />
     <link rel="stylesheet" href="assets/css/gidariak/bidaiakIkusi.css" />
+    <link rel="stylesheet" href="assets/css/gehiagoIkusiHistoriala.css" />
+
 </head>
 
 <body>
@@ -118,12 +131,33 @@ try {
 
         <!-- BIDAIEN HISTORIALA -->
         <section id="intro" class="main">
-            <h2>ZUK amaitutaKO BIDAIEN HISTORIALA</h2>
-            <p>COMING SOON</p>
-            <ul class="actions">
+            <h2>ZUK amaitutako BIDAIEN HISTORIALA</h2>
+
+            <?php if (count($historiala) === 0): ?>
+                <p>Ez dago amaitutako bidaiarik.</p>
+            <?php else: ?>
+                <div class="historiala-grid" id="historiala-container">
+                    <?php foreach ($historiala as $index => $item): ?>
+                        <div class="historiala-card" <?= $index >= 2 ? 'style="display:none;"' : '' ?>>
+                            <h4><span class="icon">📍</span> <?= htmlspecialchars($item['jatorria']) ?> → <?= htmlspecialchars($item['helmuga']) ?></h4>
+                            <p><span class="icon">📅</span> <?= htmlspecialchars($item['amaiera_data']) ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <?php if (count($historiala) > 2): ?>
+                    <div style="text-align: center; margin-top: 1em;">
+                        <button class="button big" id="ver-mas-btn">GEHIAGO IKUSI</button>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+
+            <ul class="actions" style="margin-top: 1.5em;">
                 <li><a class="button big">BORRATU HISTORIALA</a></li>
             </ul>
         </section>
+
+
 
         <!-- CTA -->
         <section id="intro" class="main">
@@ -230,6 +264,7 @@ try {
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/gidariak/bidaiakIkusi.js"></script>
+    <script src="assets/js/gehiagoIkusiHistoriala.js"></script>
 </body>
 
 </html>
