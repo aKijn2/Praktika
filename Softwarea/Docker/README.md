@@ -1,18 +1,14 @@
-# 🚧 TODO
-
-- Cuando le das a itxi saioa tanto al cliente como tambien cuando el conductor le da a itxi saioa, se le cierre sesion.
-- El conductor puede ver todos los viajes y elegirá uno. Cuando elija uno, en el viaje se le asignará el ID del conductor.
-- El conductor puede elegir el estado del viaje. puede cambiarlo a "pendiente", "bidaian" o "bidaia amaituta".
-- Cuando el viaje termine se guardara los datos del viaje en el historial del conductor.
-- Cuando elviaje termine se guardara los datos del viaje en el historial del cliente.
+# 🚧 // TODO
+## ORDENADO POR PRIORIDAD [DE MAS IMPORTANTE A MENOS]
+1. Hacer que el boton de (BORRATU HISTORIALA) funcione y les borre el historial de la base de datos.
+2. Añadir contenido en los contenedores de (Garraio pertsonalizatua, gidari profesionalak y 24/7 eskuragarri.)
+3. Añadir un icono para logear [Facilitar el proceso de login | no tener que scrollear abajo y darle a login.]
+4. Hacer que el icono de (Gmail) del footer sirva para que nos envien un correo [Al clickarlo rediriga a gmail con nuetro correo puesto.]
 
 # 🛠️ TO FIX
 
-- Cuando inicias sesión te envía a una página para poner la verificación de 2FA... NO FUNCIONA.
-- En el index.php si no estas iniciado sesion y le das a erreserbatu al implementar la informacion te lleve a iniciar sesion.
 
 ---
 
 ## ⚠️ IMPORTANTE
 
-- El conductor puede ver todos los viajes y elegirá uno. Cuando elija uno, en el viaje se le asignará el ID del conductor.

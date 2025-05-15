@@ -26,6 +26,7 @@ try {
     if (!$bezeroa) {
         die("Bezeroa ez da aurkitu.");
     }
+    $id_bezeroa = $bezeroa['id_bezeroa'];  // Guardamos el id para usarlo en el insert
 
     // 3. Lortu formularioaren datuak
     $jatorria = $_POST['jatorria'] ?? null;
@@ -38,15 +39,14 @@ try {
         die("Eremu guztiak bete behar dira.");
     }
 
-    // 4. Sartu bidaia berria (sin erreserba_id_erreserba eta sin gidaria oraindik)
-    $stmt = $pdo->prepare("INSERT INTO bidaia (jatorria, helmuga, data, ordua, egoera, pertsona_kopurua)
-                           VALUES (?, ?, ?, ?, 'pendiente', ?)");
-    $stmt->execute([$jatorria, $helmuga, $data, $ordua, $pertsona_kopurua]);
+    // 4. Sartu bidaia berria, ahora añadiendo bezeroa_id_bezeroa para vincular el viaje con el usuario
+    $stmt = $pdo->prepare("INSERT INTO bidaia (jatorria, helmuga, data, ordua, egoera, pertsona_kopurua, bezeroa_id_bezeroa)
+                           VALUES (?, ?, ?, ?, 'pendiente', ?, ?)");
+    $stmt->execute([$jatorria, $helmuga, $data, $ordua, $pertsona_kopurua, $id_bezeroa]);
 
     // 5. Bideratu berriro index.php-era
     header("Location: index.php?eskatu_success=1");
     exit;
-
 } catch (PDOException $e) {
     die("Errorea: " . $e->getMessage());
 }

@@ -8,6 +8,40 @@ if (isset($_GET['logout'])) {
   exit();
 }
 
+// Conexión y carga de historial si el usuario es bezeroa
+$historiala = [];
+
+if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
+  $host = "db";
+  $db = "alaiktomugi";
+  $user = "root";
+  $pass = "mysql";
+
+  try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Obtener ID bezeroa
+    $stmt = $pdo->prepare("SELECT id_bezeroa FROM bezeroa WHERE emaila = ?");
+    $stmt->execute([$_SESSION['emaila']]);
+    $bezeroa = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($bezeroa) {
+      $stmt = $pdo->prepare("
+SELECT h.jatorria, h.helmuga, h.amaiera_data
+FROM historikoa h
+JOIN bidaia b ON h.bidaia_id_bidaia = b.id_bidaia
+WHERE b.bezeroa_id_bezeroa = ?
+ORDER BY h.amaiera_data DESC
+  ");
+      $stmt->execute([$bezeroa['id_bezeroa']]);
+      $historiala = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+  } catch (PDOException $e) {
+    die("Errorea: " . $e->getMessage());
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="eu">
@@ -19,15 +53,17 @@ if (isset($_GET['logout'])) {
   <link rel="stylesheet" href="assets/css/main.css" />
   <link rel="stylesheet" href="assets/css/erreserbatu.css" />
   <link rel="stylesheet" href="assets/css/eskatuHorain.css" />
+  <link rel="stylesheet" href="assets/css/gehiagoIkusiHistoriala.css" />
 </head>
 
 <body>
 
   <!-- Header -->
   <header id="header" class="alt">
+
     <div class="inner">
       <h1>AlaiktoMUGI</h1>
-      <p>Mugikortasuna zure esku. Taxi zerbitzu azkar eta fidagarria Euskal Herrian.</p>
+      <p>Mugikortasuna zure eskura, bidaiak erraz eta seguru egiteko. Taxi zerbitzu azkar eta fidagarria, Euskal Herrian.</p>
     </div>
   </header>
 
@@ -134,14 +170,37 @@ if (isset($_GET['logout'])) {
       </article>
     </section>
 
-    <!-- BIDAIEN HISTORIALA COMING SOON -->
-    <section id="intro" class="main">
-      <h2>ZUK EGINDAKO BIDAIEN HISTORIALA</h2>
-      <p>COMING SOON</p>
-      <ul class="actions">
-        <li><a href="#" class="button big">BORRATU HISTORIALA</a></li>
-      </ul>
-    </section>
+    <?php if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa'): ?>
+      <section id="intro" class="main">
+        <h2>ZUK EGINDAKO BIDAIEN HISTORIALA</h2>
+
+        <?php if (count($historiala) === 0): ?>
+          <p>Ez duzu oraindik amaitutako bidaiarik.</p>
+        <?php else: ?>
+          <div class="historiala-grid" id="historiala-container">
+            <?php foreach ($historiala as $index => $item): ?>
+              <div class="historiala-card" <?= $index >= 2 ? 'style="display:none;"' : '' ?>>
+                <h4><span class="icon">📍</span> <?= htmlspecialchars($item['jatorria']) ?> → <?= htmlspecialchars($item['helmuga']) ?></h4>
+                <p><span class="icon">📅</span> <?= htmlspecialchars($item['amaiera_data']) ?></p>
+              </div>
+            <?php endforeach; ?>
+          </div>
+
+          <?php if (count($historiala) > 2): ?>
+            <div style="text-align: center; margin-top: 1em;">
+              <button class="button big" id="ver-mas-btn">GEHIAGO IKUSI</button>
+            </div>
+          <?php endif; ?>
+        <?php endif; ?>
+
+        <ul class="actions" style="margin-top: 1.5em;">
+          <li><a href="#" class="button big">BORRATU HISTORIALA</a></li>
+        </ul>
+      </section>
+    <?php endif; ?>
+
+
+
 
     <!-- CTA -->
     <section id="intro" class="main">
@@ -166,7 +225,7 @@ if (isset($_GET['logout'])) {
   </div>
 
   <div class="copyright">
-    AlaiktoMUGI © 2025 - Webgunea garatua <a href="https://templated.co/">Achraf Allach Chahboun - Iker Hernández
+    AlaiktoMUGI © 2025 - Webgunea garatua <a href="#">Achraf Allach Chahboun - Iker Hernández
       Navas</a>
   </div>
 
@@ -176,6 +235,7 @@ if (isset($_GET['logout'])) {
   <script src="assets/js/util.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/eskatuHorain.js"></script>
+  <script src="assets/js/gehiagoIkusiHistoriala.js"></script>
 </body>
 
 </html>
