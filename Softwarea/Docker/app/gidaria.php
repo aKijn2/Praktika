@@ -105,6 +105,19 @@ try {
     <!-- Wrapper -->
     <div id="wrapper">
 
+        <!-- CTA -->
+        <section id="intro" class="main">
+            <h2>¿SAIOA AMAITU NAHI AL DUZU?</h2>
+            <p>Dena bukatuta baldin baduzu, sahia amaitzeko prest zaude!</p>
+            <ul class="actions">
+                <?php if (isset($_SESSION['emaila'])): ?>
+                    <li><a href="index.php?logout=true" class="button big">ITXI SAIOA</a></li>
+                <?php else: ?>
+                    <li><a href="login.php" class="button big">SAIOA HASI</a></li>
+                <?php endif; ?>
+            </ul>
+        </section>
+
         <!-- Items -->
         <section class="main items">
             <article class="item">
@@ -152,25 +165,9 @@ try {
                 <?php endif; ?>
             <?php endif; ?>
 
-            <ul class="actions" style="margin-top: 1.5em;">
-                <li><a class="button big">BORRATU HISTORIALA</a></li>
-            </ul>
+
         </section>
 
-
-
-        <!-- CTA -->
-        <section id="intro" class="main">
-            <h2>¿SAIOA AMAITU NAHI AL DUZU?</h2>
-            <p>Dena bukatuta baldin baduzu, sahia amaitzeko prest zaude!</p>
-            <ul class="actions">
-                <?php if (isset($_SESSION['emaila'])): ?>
-                    <li><a href="index.php?logout=true" class="button big">ITXI SAIOA</a></li>
-                <?php else: ?>
-                    <li><a href="login.php" class="button big">SAIOA HASI</a></li>
-                <?php endif; ?>
-            </ul>
-        </section>
     </div>
 
     <!-- Bidaiak ikusi model -->
@@ -251,7 +248,15 @@ try {
                 </tbody>
             </table>
         </div>
+
     </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+    </footer>
 
     <div class="copyright">
         AlaiktoMUGI © 2025 - Webgunea garatua <a href="#">Achraf Allach Chahboun - Iker Hernández

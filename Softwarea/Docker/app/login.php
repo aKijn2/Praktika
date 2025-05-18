@@ -44,7 +44,6 @@ try {
         // Si no coincide con ningún usuario
         $error = "Erabiltzailea edo pasahitza ez da zuzena.";
     }
-
 } catch (PDOException $e) {
     $error = "Errorea konexioan: " . $e->getMessage();
 }

@@ -70,6 +70,19 @@ ORDER BY h.amaiera_data DESC
   <!-- Wrapper -->
   <div id="wrapper">
 
+    <!-- CTA -->
+    <section id="intro" class="main">
+      <h2>HASI SAIOA ETA ESKATU TAXIA</h2>
+      <p>AlaiktoMUGI-rekin zure hurrengo bidaia azkar eta erraz antolatu.</p>
+      <ul class="actions">
+        <?php if (isset($_SESSION['emaila'])): ?>
+          <li><a href="index.php?logout=true" class="button big">ITXI SAIOA</a></li>
+        <?php else: ?>
+          <li><a href="login.php" class="button big">SAIOA HASI</a></li>
+        <?php endif; ?>
+      </ul>
+    </section>
+
     <!-- ✅ Modal: Eskatu orain -->
     <div id="eskatuModal" class="modal">
       <div class="modal-content">
@@ -193,27 +206,8 @@ ORDER BY h.amaiera_data DESC
           <?php endif; ?>
         <?php endif; ?>
 
-        <ul class="actions" style="margin-top: 1.5em;">
-          <li><a href="#" class="button big">BORRATU HISTORIALA</a></li>
-        </ul>
       </section>
     <?php endif; ?>
-
-
-
-
-    <!-- CTA -->
-    <section id="intro" class="main">
-      <h2>HASI SAIOA ETA ESKATU TAXIA</h2>
-      <p>AlaiktoMUGI-rekin zure hurrengo bidaia azkar eta erraz antolatu.</p>
-      <ul class="actions">
-        <?php if (isset($_SESSION['emaila'])): ?>
-          <li><a href="index.php?logout=true" class="button big">ITXI SAIOA</a></li>
-        <?php else: ?>
-          <li><a href="login.php" class="button big">SAIOA HASI</a></li>
-        <?php endif; ?>
-      </ul>
-    </section>
 
     <!-- Footer -->
     <footer id="footer">
