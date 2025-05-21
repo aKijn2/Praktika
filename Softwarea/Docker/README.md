@@ -9,30 +9,48 @@
 <!-- 2. **Atributo `hegoera` en la base de datos** [COMPLETADO]
     - Añadir un nuevo atributo `hegoera` para que los clientes puedan consultar el estado de su pedido en el historial. -->
 
-3. **Contenido en los contenedores**
+3. **Contenido en los contenedores [INDEX]**
     - Completar la información en los apartados:
         - Garraio pertsonalizatua
         <!-- - Gidari profesionalak -->
         - 24/7 eskuragarri
 
-4. **Implementaciones en panel de conductor**
+4. **Implementaciones en [PANEL DE CONDUCTOR]**
     - Añadir los siguientes funcionalidades:
         - Ver el estado del viaje [sin implementar la funcion]
         - Ordenar por fecha.
         - Ordenar por estado.
         - Filtrar por Jatorria.
         - Filtrar por Helburua.
+5. **Panel de reservas [INDEX]**
+    - Funcionalidades de reserva:
+        - Si tienes una reserva creada no puedes crear mas.
+        - Para crear una reserva no tienes que tener ninguna.
+        - En el panel de [Erreserbatu zure bidaia] si tienes una reserva mostrar la reserva y poner que puedas quitarla, si no tienes ninguna reserva mostrar el panel para hacer la reserva
+
+6. **Funcionalidad de las reseñas [INDEX]**
+    - Opcion 1:
+        - Crear oh cambiar uno de los bloques de index, y llamarlo balora tus viajes.
+
+    - Opcion 2:
+        - Funcion que permite a los clientes valorar su experiencia despues de que el viaje haya terminado.
+
+7. **Accesible desde cualquier dispositivo**
+    - La web debe ser accesible desde cualquier dispositivo, ya sea movil o pc.
 ---
 
 ## 🛠️ Pendiente de corregir
 
-1. **Unificación de estilo**
+1. **interfaz de erreserbatu.php**
+    - Implementar estilo, crear un pop-up y no redirigir a erreserbatu.php para decir [Erabiltzaile autentifikatua izan behar duzu erreserba bat egiteko].
+
+2. **Unificación de estilo**
     - Toda la página debe mantener un estilo y formato coherentes.
 
-2. **Diseño responsive**
+3. **Diseño responsive**
     - La página debe adaptarse correctamente a diferentes tamaños de pantalla y dispositivos móviles.
 
-3. **Funcionalidad de historial**
+4. **Funcionalidad de historial**
     - El boton de mostrar mas del index.php para los clientes no funciona, no muestra mas el historial.
 
 ---
