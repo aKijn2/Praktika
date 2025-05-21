@@ -2,7 +2,7 @@
 
 ## 📌 Prioridades (de mayor a menor)
 
-<!-- 1. **Reserva y pedido de taxi**
+<!-- 1. **Reserva y pedido de taxi** [COMPLETADO]
     - Al realizar una reserva y posteriormente solicitar un taxi, la reserva debe guardarse en la base de datos con su ID correspondiente.
     - La reserva debe incluir fecha y hora; si luego se solicita un taxi, se asignarán automáticamente la fecha y hora de la reserva existente. -->
 
@@ -12,9 +12,16 @@
 3. **Contenido en los contenedores**
     - Completar la información en los apartados:
         - Garraio pertsonalizatua
-        - Gidari profesionalak
+        <!-- - Gidari profesionalak -->
         - 24/7 eskuragarri
 
+4. **Implementaciones en panel de conductor**
+    - Añadir los siguientes funcionalidades:
+        - Ver el estado del viaje [sin implementar la funcion]
+        - Ordenar por fecha.
+        - Ordenar por estado.
+        - Filtrar por Jatorria.
+        - Filtrar por Helburua.
 ---
 
 ## 🛠️ Pendiente de corregir

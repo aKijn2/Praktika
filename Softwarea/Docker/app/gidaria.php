@@ -111,8 +111,7 @@ if ($gidaria) {
     <header id="header" class="alt">
         <div class="inner">
             <h1>
-                <span style="display:block;">AlaiktoMUGI</span>
-                <span style="display:block; font-size:1.2em; margin-top:0.2em;">Gidari Panela</span>
+                <span style="display:block;">AlaiktoMUGI <br> Gidari Panela</span>
             </h1>
             <p>Kudeatu bezeroen bidaiak, historiala ikusi eta gehiago gure gidari panelarekin.</p>
         </div>
@@ -319,10 +318,10 @@ if ($gidaria) {
     <!-- Scripts -->
     <script src="assets/js/default/jquery.min.js"></script>
     <script src="assets/js/default/skel.min.js"></script>
-    <script src="assets/js/default/util.js"></script>
-    <script src="assets/js/default/main.js"></script>
-    <script src="assets/js/gidariak/bidaiakIkusi.js"></script>
+    <script src="ets/js/gidariak/bidaiakIkusi.js"></script>
     <script src="assets/js/default/gehiagoIkusiHistoriala.js"></script>
-</body>
+</body>assets/js/default/util.js"></script>
+    <script src="assets/js/default/main.js"></script>
+    <script src="ass
 
 </html>

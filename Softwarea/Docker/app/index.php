@@ -67,6 +67,7 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="assets/css/default/main.css" />
   <link rel="stylesheet" href="assets/css/default/gehiagoIkusiHistoriala.css" />
+  <link rel="stylesheet" href="assets/css/default/gidariProfesionalakPanela.css" />
   <link rel="stylesheet" href="assets/css/bezeroak/erreserbatu.css" />
   <link rel="stylesheet" href="assets/css/bezeroak/eskatuHorain.css" />
   <link rel="stylesheet" href="assets/css/bezeroak/review.css" />
@@ -188,6 +189,7 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
         </ul>
       </article>
 
+      <!-- ✅ BOTÓN -->
       <article class="item">
         <header>
           <a href="#"><img src="images/bezeroak/2.jpg" alt="" /></a>
@@ -195,9 +197,30 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
         </header>
         <p>Gure gidari guztiak esperientziadunak eta adeitsuak dira.</p>
         <ul class="actions">
-          <li><a href="#" class="button">Ezagutu</a></li>
+          <li><a href="#" class="button" id="ezagutuBtn">Ezagutu</a></li>
         </ul>
       </article>
+
+      <!-- ✅ MODAL MEJORADO -->
+      <div id="ezagutuModal" class="modal">
+        <div class="modal-content fancy">
+          <span class="close" id="closeEzagutu">&times;</span>
+          <div class="modal-body">
+            <img src="images/bezeroak/2.jpg" alt="Gidaria" class="modal-img" />
+            <div class="modal-text">
+              <h2>Gidari Profesionalak</h2>
+              <p>
+                Gure gidari guztiak hautaketa prozesu zorrotza gainditu dute, eta esperientzia handia dute garraio seguru eta atsegina eskaintzen.
+              </p>
+              <p>
+                Prest daude zure beharretara egokitzeko, puntualtasuna eta profesionaltasuna bermatuz.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 
       <article class="item">
         <header>
@@ -353,10 +376,10 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
   <script src="assets/js/default/util.js"></script>
   <script src="assets/js/default/main.js"></script>
   <script src="assets/js/default/gehiagoIkusiHistoriala.js"></script>
+  <script src="assets/js/default/gidariProfesionalakPanela.js"></script>
   <script src="assets/js/bezeroak/eskatuHorain.js"></script>
   <script src="assets/js/bezeroak/review.js"></script>
   <script src="assets/js/bezeroak/eskatuHorainKudeaketa.js"></script>
-
 </body>
 
 </html>
