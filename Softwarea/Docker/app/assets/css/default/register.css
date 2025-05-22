@@ -70,3 +70,8 @@ body {
   margin-bottom: 32em;
   position: absolute;
 }
+
+a.register-link {
+  color: black;
+  text-decoration: none;
+}

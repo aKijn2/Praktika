@@ -55,7 +55,7 @@ body {
   background-color: rgb(255, 253, 132);
 }
 
-a.register-link {
+.login-href {
   text-decoration: none;
   color: black;
 }
@@ -70,5 +70,3 @@ a.register-link {
   margin-bottom: 32em;
   position: absolute;
 }
-
-

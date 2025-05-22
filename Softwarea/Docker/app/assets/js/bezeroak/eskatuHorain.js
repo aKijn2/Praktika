@@ -1,5 +1,5 @@
 // Modal: Eskatu orain
-const eskatuModal = document.getElementById("eskatuModal");
+const eskatuModal = document.getElementById("eskatuModalSplit");
 const eskatuBtn = document.getElementById("eskatuOrainBtn");
 const closeEskatu = document.getElementById("closeEskatu");
 

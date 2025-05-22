@@ -161,6 +161,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             </div>
 
+            <div class="form-group">
+                <a href="login.php" class="register-link">Login</a>
+            </div>
+
             <div style="text-align: center; margin-top: 2em;">
                 <button type="submit" class="Register-btn">SORTU</button>
             </div>

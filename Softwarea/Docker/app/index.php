@@ -15,10 +15,10 @@ $reserbak = [];
 $bezeroa = null;
 
 if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
-  $host = "db";
-  $db = "alaiktomugi";
-  $user = "root";
-  $pass = "mysql";
+  $host = "sql7.freesqldatabase.com";
+  $db = "sql7780328";
+  $user = "sql7780328";
+  $pass = "MzWdllcr3Y";
 
   try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
@@ -68,9 +68,8 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
   <link rel="stylesheet" href="assets/css/default/main.css" />
   <link rel="stylesheet" href="assets/css/default/gehiagoIkusiHistoriala.css" />
   <link rel="stylesheet" href="assets/css/default/gidariProfesionalakPanela.css" />
-  <link rel="stylesheet" href="assets/css/bezeroak/erreserbatu.css" />
-  <link rel="stylesheet" href="assets/css/bezeroak/eskatuHorain.css" />
   <link rel="stylesheet" href="assets/css/bezeroak/review.css" />
+  <link rel="stylesheet" href="assets/css/bezeroak/eskatuModalSplit.css" />
 </head>
 
 <body>
@@ -107,63 +106,64 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
     </section>
 
 
-    <!-- ✅ Modal: Eskatu orain -->
-    <div id="eskatuModal" class="modal">
+    <!-- ✅ Modal: Eskatu orain (versión dividida) -->
+    <div id="eskatuModalSplit" class="modal">
       <div class="modal-content">
         <span class="close" id="closeEskatu">&times;</span>
         <h2>Eskatu zure taxi orain</h2>
-        <form action="php/bezeroa/eskatuHorain.php" method="POST">
-          <label for="jatorria">Jatorria:</label>
-          <input type="text" id="jatorria" name="jatorria" required>
+        <form action="php/bezeroa/eskatuHorain.php" method="POST" class="form-split">
+          <!-- Columna izquierda -->
+          <div class="form-column">
+            <label for="jatorria">Jatorria:</label>
+            <input type="text" id="jatorria" name="jatorria" required>
 
-          <label for="helmuga">Helmuga:</label>
-          <input type="text" id="helmuga" name="helmuga" required>
+            <label for="helmuga">Helmuga:</label>
+            <input type="text" id="helmuga" name="helmuga" required>
 
-          <label for="pertsona_kopurua">Pertsona kopurua:</label>
-          <input type="number" id="pertsona_kopurua" name="pertsona_kopurua" required min="1">
-
-          <!-- Aukeratu zure erreserba baldin baduzu: -->
-          <label for="erreserba">Erreserba:</label>
-          <select id="erreserba" name="erreserba_id">
-            <option value="">-- Aukeratu zure erreserba --</option>
-            <?php foreach ($reserbak as $res): ?>
-              <option value="<?= $res['id_erreserba'] ?>">
-                <?= $res['id_erreserba'] ?> - <?= $res['data_esleipena'] ?> <?= $res['ordua_esleipena'] ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-
-          <!-- Contenedor para fecha -->
-          <div id="data-field">
-            <label for="data">Data:</label>
-            <input type="date" id="data" name="data" required min="<?= date('Y-m-d'); ?>">
+            <label for="pertsona_kopurua">Pertsona kopurua:</label>
+            <input type="number" id="pertsona_kopurua" name="pertsona_kopurua" required min="1">
           </div>
 
-          <!-- Contenedor para hora -->
-          <div id="ordua-field">
+          <!-- Columna derecha -->
+          <div class="form-column">
+            <label for="erreserba">Erreserba:</label>
+            <select id="erreserba" name="erreserba_id">
+              <option value="">-- Aukeratu zure erreserba --</option>
+              <?php foreach ($reserbak as $res): ?>
+                <option value="<?= $res['id_erreserba'] ?>">
+                  <?= $res['id_erreserba'] ?> - <?= $res['data_esleipena'] ?> <?= $res['ordua_esleipena'] ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required min="<?= date('Y-m-d'); ?>">
+
             <label for="ordua">Ordua:</label>
             <input type="time" id="ordua" name="ordua" required>
           </div>
 
-          <button type="submit" class="button">Bidali</button>
+          <button type="submit" class="button" style="margin-top: 1em;">Bidali</button>
         </form>
       </div>
     </div>
 
     <!-- ✅ Modal: Erreserbatu -->
     <div id="erreserbatuModal" class="modal">
-      <div class="modal-content">
+      <div class="modal-content fancy">
         <span class="close" id="closeErreserbatu">&times;</span>
-        <h2>Erreserbatu zure bidaia</h2>
-        <form action="php/bezeroa/erreserbatu.php" method="POST">
-          <label for="data">Data:</label>
-          <input type="date" id="data" name="data" required min="<?= date('Y-m-d'); ?>">
+        <div class="modal-body">
+          <h2>Erreserbatu zure bidaia</h2>
+          <form action="php/bezeroa/erreserbatu.php" method="POST">
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required min="<?= date('Y-m-d'); ?>">
 
-          <label for="ordua">Ordua:</label>
-          <input type="time" id="ordua" name="ordua" required>
+            <label for="ordua">Ordua:</label>
+            <input type="time" id="ordua" name="ordua" required>
 
-          <button type="submit" class="button">Erreserbatu</button>
-        </form>
+            <button type="submit" class="button">Erreserbatu</button>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -185,9 +185,22 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
         </header>
         <p>Bezero bakoitza berezia da guretzat!</p>
         <ul class="actions">
-          <li><a href="#" class="button">Gehiago</a></li>
+        <li><button class="button">GEHIAGO</button></li>
         </ul>
       </article>
+
+      <!-- ✅ Modal para "Gehiago" -->
+      <div id="gehiagoModal" class="modal">
+          <div class="modal-content fancy">
+          <span class="close" id="closeGehiago">&times;</span>
+            <div class="modal-body">
+          <h2>Garraio pertsonalizatua</h2>
+          <p>
+            Gure garraio zerbitzuak zure beharretara egokitzen dira. Zerbitzu esklusibo eta malguak eskaintzen ditugu, zure esperientzia ahalik eta erosoena izan dadin.
+          </p>
+              </div>
+        </div>
+      </div>
 
       <!-- ✅ BOTÓN -->
       <article class="item">
@@ -201,21 +214,18 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
         </ul>
       </article>
 
-      <!-- ✅ MODAL MEJORADO -->
+      <!-- ✅ MODAL Ezagutu -->
       <div id="ezagutuModal" class="modal">
         <div class="modal-content fancy">
           <span class="close" id="closeEzagutu">&times;</span>
           <div class="modal-body">
-            <img src="images/bezeroak/2.jpg" alt="Gidaria" class="modal-img" />
-            <div class="modal-text">
-              <h2>Gidari Profesionalak</h2>
-              <p>
-                Gure gidari guztiak hautaketa prozesu zorrotza gainditu dute, eta esperientzia handia dute garraio seguru eta atsegina eskaintzen.
-              </p>
-              <p>
-                Prest daude zure beharretara egokitzeko, puntualtasuna eta profesionaltasuna bermatuz.
-              </p>
-            </div>
+            <h2>Gidari Profesionalak</h2>
+            <p>
+              Gure gidari guztiak hautaketa prozesu zorrotza gainditu dute, eta esperientzia handia dute garraio seguru eta atsegina eskaintzen.
+            </p>
+            <p>
+              Prest daude zure beharretara egokitzeko, puntualtasuna eta profesionaltasuna bermatuz.
+            </p>
           </div>
         </div>
       </div>
@@ -380,6 +390,31 @@ if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
   <script src="assets/js/bezeroak/eskatuHorain.js"></script>
   <script src="assets/js/bezeroak/review.js"></script>
   <script src="assets/js/bezeroak/eskatuHorainKudeaketa.js"></script>
+  <script src="assets/js/bezeroak/gehiagoModal"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const gehiagoBtn = document.querySelector('.item .button');
+      const gehiagoModal = document.getElementById('gehiagoModal');
+      const closeBtn = document.getElementById('closeGehiago');
+
+      gehiagoBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        gehiagoModal.style.display = 'block';
+      });
+
+      closeBtn.addEventListener('click', () => {
+        gehiagoModal.style.display = 'none';
+      });
+
+      window.addEventListener('click', (e) => {
+        if (e.target == gehiagoModal) {
+          gehiagoModal.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+
 </body>
 
 </html>
