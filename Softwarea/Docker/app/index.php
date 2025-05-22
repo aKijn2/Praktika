@@ -15,10 +15,10 @@ $reserbak = [];
 $bezeroa = null;
 
 if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
-  $host = "sql7.freesqldatabase.com";
-  $db = "sql7780328";
-  $user = "sql7780328";
-  $pass = "MzWdllcr3Y";
+$host = "db";
+$db = "alaiktomugi";
+$user = "root";
+$pass = "mysql";
 
   try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
