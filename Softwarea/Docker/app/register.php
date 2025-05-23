@@ -1,8 +1,6 @@
 <?php
-$host = "db";
-$db = "alaiktomugi";
-$user = "root";
-$pass = "mysql";
+require_once 'db.php';
+
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

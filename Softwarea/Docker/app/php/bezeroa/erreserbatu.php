@@ -5,10 +5,7 @@ if (!isset($_SESSION['emaila'])) {
     die("Erabiltzaile autentifikatua izan behar duzu erreserba bat egiteko.");
 }
 
-$host = "db";
-$db = "alaiktomugi";
-$user = "root";
-$pass = "mysql";
+require_once 'db.php';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);

@@ -15,10 +15,7 @@ $reserbak = [];
 $bezeroa = null;
 
 if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
-$host = "db";
-$db = "alaiktomugi";
-$user = "root";
-$pass = "mysql";
+require_once 'db.php'; // Incluimos la configuración de la base de datos
 
   try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);

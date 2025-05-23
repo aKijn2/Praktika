@@ -8,10 +8,7 @@ if (!isset($_SESSION['emaila']) || $_SESSION['rol'] !== 'gidaria') {
 }
 
 // 🔁 Variables de conexión
-$host = "db";
-$db = "alaiktomugi";
-$user = "root";
-$pass = "mysql";
+require_once 'db.php';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);

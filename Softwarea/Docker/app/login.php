@@ -2,10 +2,7 @@
 session_start();
 
 // Configuración de la base de datos
-$host = "db";
-$db = "alaiktomugi";
-$user = "root";
-$pass = "mysql";
+require_once 'db.php';
 $error = "";
 
 // Conexión a la base de datos
