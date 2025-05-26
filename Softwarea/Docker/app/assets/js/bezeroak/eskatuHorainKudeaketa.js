@@ -1,25 +1,36 @@
 document.addEventListener("DOMContentLoaded", function () {
   const erreserbaSelect = document.getElementById("erreserba");
-  const dataField = document.getElementById("data-field");
-  const orduaField = document.getElementById("ordua-field");
+  const dataInput = document.getElementById("data");
+  const orduaInput = document.getElementById("ordua");
+  const dataLabel = document.querySelector("label[for='data']");
+  const orduaLabel = document.querySelector("label[for='ordua']");
+
+  if (
+    !erreserbaSelect ||
+    !dataInput ||
+    !orduaInput ||
+    !dataLabel ||
+    !orduaLabel
+  ) {
+    console.error("Uno o más elementos no se encontraron");
+    return;
+  }
 
   function toggleDateTimeFields() {
-    const hasReservation = erreserbaSelect && erreserbaSelect.value;
-    if (hasReservation) {
-      dataField.style.display = "none";
-      orduaField.style.display = "none";
-      document.getElementById("data").required = false;
-      document.getElementById("ordua").required = false;
-    } else {
-      dataField.style.display = "block";
-      orduaField.style.display = "block";
-      document.getElementById("data").required = true;
-      document.getElementById("ordua").required = true;
-    }
+    const hasReservation = erreserbaSelect.value !== "";
+
+    dataInput.style.display = hasReservation ? "none" : "block";
+    orduaInput.style.display = hasReservation ? "none" : "block";
+    dataLabel.style.display = hasReservation ? "none" : "block";
+    orduaLabel.style.display = hasReservation ? "none" : "block";
+
+    dataInput.required = !hasReservation;
+    orduaInput.required = !hasReservation;
   }
 
-  if (erreserbaSelect) {
-    toggleDateTimeFields(); // Inicial al cargar
-    erreserbaSelect.addEventListener("change", toggleDateTimeFields);
-  }
+  // Ejecutar al cargar
+  toggleDateTimeFields();
+
+  // Ejecutar cuando cambia la selección
+  erreserbaSelect.addEventListener("change", toggleDateTimeFields);
 });

@@ -54,13 +54,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<!DOCTYPE html>
 <html lang="eu">
 
 <head>
     <meta charset="UTF-8">
     <title>Register - AlaiktoMUGI</title>
-    <link rel="stylesheet" href="assets/css/default/Register.css" />
+    <link rel="stylesheet" href="assets/css/default/register.css">
     <style>
         /* Estilos para el popup */
         .popup {
@@ -90,60 +89,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <h2>KONTUA SORTU</h2>
 
         <!-- Mostrar mensaje si el registro fue exitoso -->
-        <?php if ($registration_success): ?>
-            <div class="popup" id="popup">
-                <p>Erabiltzailea arrakastaz erregistratu da!</p>
-            </div>
 
-            <script>
-                // Mostrar el popup
-                document.getElementById('popup').style.display = 'block';
-
-                // Redirigir después de 3.5 segundos
-                setTimeout(function() {
-                    window.location.href = "login.php"; // Redirigir a la página de login
-                }, 3500);
-            </script>
-        <?php endif; ?>
-
-        <form action="Register.php" method="POST" novalidate>
+        <form action="register.php" method="POST" novalidate="">
             <div style="display: flex; gap: 2em; justify-content: center;">
                 <div style="flex: 1;">
                     <div class="form-group">
                         <label for="username">Izena</label>
-                        <input type="text" id="username" name="username" required
-                            value="<?= htmlspecialchars($username) ?>">
+                        <input type="text" id="username" name="username" required="" value="">
                     </div>
 
                     <div class="form-group">
                         <label for="surname">Abizena</label>
-                        <input type="text" id="surname" name="surname" required
-                            value="<?= htmlspecialchars($surname) ?>">
+                        <input type="text" id="surname" name="surname" required="" value="">
                     </div>
 
                     <div class="form-group">
                         <label for="email">Emaila</label>
-                        <input type="email" id="email" name="email" required value="<?= htmlspecialchars($email) ?>">
+                        <input type="email" id="email" name="email" required="" value="">
                     </div>
                 </div>
 
                 <div style="flex: 1;">
                     <div class="form-group">
                         <label for="phone">Telefonoa</label>
-                        <input type="text" id="phone" name="phone" required maxlength="9"
-                            value="<?= htmlspecialchars($phone) ?>">
+                        <input type="text" id="phone" name="phone" required="" maxlength="9" value="">
                     </div>
 
                     <div class="form-group">
                         <label for="nan">NAN</label>
-                        <input type="text" id="nan" name="nan" placeholder="Aukerakoa"
-                            value="<?= htmlspecialchars($nan) ?>">
+                        <input type="text" id="nan" name="nan" placeholder="Aukerakoa" value="">
                     </div>
 
                     <div class="form-group">
                         <label for="address">Helbidea</label>
-                        <input type="text" id="address" name="address" required
-                            value="<?= htmlspecialchars($address) ?>">
+                        <input type="text" id="address" name="address" required="" value="">
                     </div>
                 </div>
             </div>
@@ -151,11 +130,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div style="width: 100%; margin-top: 1em;">
                 <div class="form-group" style="width: 300px; margin: 0 auto;">
                     <label for="password">Pasahitza</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required="">
                 </div>
                 <div class="form-group" style="width: 300px; margin: 0 auto;">
                     <label for="confirm_password">Errepikatu pasahitza</label>
-                    <input type="password" id="confirm_password" name="confirm_password" required>
+                    <input type="password" id="confirm_password" name="confirm_password" required="">
                 </div>
             </div>
 

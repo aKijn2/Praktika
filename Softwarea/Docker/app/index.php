@@ -15,7 +15,7 @@ $reserbak = [];
 $bezeroa = null;
 
 if (isset($_SESSION['emaila']) && $_SESSION['rol'] === 'bezeroa') {
-require_once 'db.php'; // Incluimos la configuración de la base de datos
+  require_once 'db.php'; // Incluimos la configuración de la base de datos
 
   try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
@@ -134,10 +134,11 @@ require_once 'db.php'; // Incluimos la configuración de la base de datos
             </select>
 
             <label for="data">Data:</label>
-            <input type="date" id="data" name="data" required min="<?= date('Y-m-d'); ?>">
+            <input type="date" id="data" name="data" required>
 
             <label for="ordua">Ordua:</label>
             <input type="time" id="ordua" name="ordua" required>
+
           </div>
 
           <button type="submit" class="button" style="margin-top: 1em;">Bidali</button>
@@ -182,20 +183,20 @@ require_once 'db.php'; // Incluimos la configuración de la base de datos
         </header>
         <p>Bezero bakoitza berezia da guretzat!</p>
         <ul class="actions">
-        <li><button class="button">GEHIAGO</button></li>
+          <li><button class="button">GEHIAGO</button></li>
         </ul>
       </article>
 
       <!-- ✅ Modal para "Gehiago" -->
       <div id="gehiagoModal" class="modal">
-          <div class="modal-content fancy">
+        <div class="modal-content fancy">
           <span class="close" id="closeGehiago">&times;</span>
-            <div class="modal-body">
-          <h2>Garraio pertsonalizatua</h2>
-          <p>
-            Gure garraio zerbitzuak zure beharretara egokitzen dira. Zerbitzu esklusibo eta malguak eskaintzen ditugu, zure esperientzia ahalik eta erosoena izan dadin.
-          </p>
-              </div>
+          <div class="modal-body">
+            <h2>Garraio pertsonalizatua</h2>
+            <p>
+              Gure garraio zerbitzuak zure beharretara egokitzen dira. Zerbitzu esklusibo eta malguak eskaintzen ditugu, zure esperientzia ahalik eta erosoena izan dadin.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -385,8 +386,8 @@ require_once 'db.php'; // Incluimos la configuración de la base de datos
   <script src="assets/js/default/gehiagoIkusiHistoriala.js"></script>
   <script src="assets/js/default/gidariProfesionalakPanela.js"></script>
   <script src="assets/js/bezeroak/eskatuHorain.js"></script>
-  <script src="assets/js/bezeroak/review.js"></script>
   <script src="assets/js/bezeroak/eskatuHorainKudeaketa.js"></script>
+  <script src="assets/js/bezeroak/review.js"></script>
   <script src="assets/js/bezeroak/gehiagoModal"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -410,8 +411,5 @@ require_once 'db.php'; // Incluimos la configuración de la base de datos
       });
     });
   </script>
-
-
 </body>
-
 </html>

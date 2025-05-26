@@ -6,7 +6,7 @@ if (!isset($_SESSION['emaila']) || $_SESSION['rol'] !== 'gidaria') {
     exit();
 }
 
-require_once 'db.php';
+require_once __DIR__ . '/../../db.php';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);

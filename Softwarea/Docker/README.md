@@ -11,32 +11,32 @@
 
 3. **Contenido en los contenedores [INDEX]**
     - Completar la información en los apartados:
-        - Garraio pertsonalizatua
+        <!-- - Garraio pertsonalizatua -->
         <!-- - Gidari profesionalak -->
         - 24/7 eskuragarri
 
-4. **Implementaciones en [PANEL DE CONDUCTOR]**
+<!-- 4. **Implementaciones en [PANEL DE CONDUCTOR]**
     - Añadir los siguientes funcionalidades:
         - Ver el estado del viaje [sin implementar la funcion]
         - Ordenar por fecha.
         - Ordenar por estado.
         - Filtrar por Jatorria.
-        - Filtrar por Helburua.
-5. **Panel de reservas [INDEX]**
+        - Filtrar por Helburua. -->
+1. **Panel de reservas [INDEX] (PLUS)**
     - Funcionalidades de reserva:
         - Si tienes una reserva creada no puedes crear mas.
         - Para crear una reserva no tienes que tener ninguna.
         - En el panel de [Erreserbatu zure bidaia] si tienes una reserva mostrar la reserva y poner que puedas quitarla, si no tienes ninguna reserva mostrar el panel para hacer la reserva
 
-6. **Funcionalidad de las reseñas [INDEX]**
+2. **Funcionalidad de las reseñas [INDEX] (plus)**
     - Opcion 1:
         - Crear oh cambiar uno de los bloques de index, y llamarlo balora tus viajes.
 
     - Opcion 2:
         - Funcion que permite a los clientes valorar su experiencia despues de que el viaje haya terminado.
 
-7. **Accesible desde cualquier dispositivo**
-    - La web debe ser accesible desde cualquier dispositivo, ya sea movil o pc.
+<!-- 3. **Accesible desde cualquier dispositivo**
+    - La web debe ser accesible desde cualquier dispositivo, ya sea movil o pc. -->
 ---
 
 ## 🛠️ Pendiente de corregir

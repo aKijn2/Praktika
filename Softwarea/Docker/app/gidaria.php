@@ -35,7 +35,7 @@ try {
                 $ordua = date('H:i:s');
 
                 $stmt = $pdo->prepare("INSERT INTO historikoa (amaiera_data, amaiera_ordua, jatorria, helmuga, bidaia_id_bidaia)
-                                       VALUES (?, ?, ?, ?, ?)");
+       VALUES (?, ?, ?, ?, ?)");
                 $stmt->execute([$data, $ordua, $bidaia['jatorria'], $bidaia['helmuga'], $id_bidaia]);
             }
         }
@@ -62,11 +62,11 @@ try {
 
     // ✅ Obtener historiala de viajes amaituta para este gidaria con todos los campos requeridos
     $stmt = $pdo->prepare("
-        SELECT h.bidaia_id_bidaia AS id_bidaia, h.amaiera_data, h.amaiera_ordua, h.jatorria, h.helmuga
-        FROM historikoa h
-        JOIN bidaia b ON h.bidaia_id_bidaia = b.id_bidaia
-        WHERE b.gidaria_id_gidaria = ?
-        ORDER BY h.amaiera_data DESC, h.amaiera_ordua DESC
+SELECT h.bidaia_id_bidaia AS id_bidaia, h.amaiera_data, h.amaiera_ordua, h.jatorria, h.helmuga
+FROM historikoa h
+JOIN bidaia b ON h.bidaia_id_bidaia = b.id_bidaia
+WHERE b.gidaria_id_gidaria = ?
+ORDER BY h.amaiera_data DESC, h.amaiera_ordua DESC
     ");
     $stmt->execute([$gidaria['id_gidaria']]);
     $historiala = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -99,6 +99,40 @@ if ($gidaria) {
     <link rel="stylesheet" href="assets/css/default/main.css" />
     <link rel="stylesheet" href="assets/css/gidariak/bidaiakIkusi.css" />
     <link rel="stylesheet" href="assets/css/gehiagoIkusiHistoriala.css" />
+    <style>
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        button#sortFecha {
+            display: flex;
+            align-self: center;
+            align-content: center;
+            align-items: center;
+            position: relative;
+            margin: auto;
+            padding: 2em;
+        }
+
+        .filter-controls input,
+        .filter-controls select,
+        .filter-controls button {
+            padding: 0.5em 0.75em;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .filter-controls button {
+            color: white;
+            cursor: pointer;
+        }
+
+    </style>
 
 </head>
 
@@ -165,6 +199,22 @@ if ($gidaria) {
             <?php if (count($historiala) === 0): ?>
                 <p>Ez dago amaitutako bidaiarik.</p>
             <?php else: ?>
+
+                <div class="filter-controls">
+                    <input type="text" id="filterJatorria" placeholder="🔍 Bilatu jatorria..." />
+
+                    <select id="filterEgoera">
+                        <option value="">Egoera guztia</option>
+                        <option value="pendiente">⏳ Pendiente</option>
+                        <option value="onartuta">✅ Onartuta</option>
+                        <option value="amaituta">🏁 Amaituta</option>
+                    </select>
+
+                    <button id="sortFecha">📅 Ordenatu dataren arabera (↕)</button>
+                </div>
+
+
+
                 <div class="historiala-grid" id="historiala-container">
                     <table>
                         <thead>
@@ -185,6 +235,13 @@ if ($gidaria) {
                                     <td><?= htmlspecialchars($item['amaiera_ordua']) ?></td>
                                     <td><?= htmlspecialchars($item['jatorria']) ?></td>
                                     <td><?= htmlspecialchars($item['helmuga']) ?></td>
+                                    <td>
+                                        <?php
+                                        $stmt = $pdo->prepare("SELECT egoera FROM bidaia WHERE id_bidaia = ?");
+                                        $stmt->execute([$item['id_bidaia']]);
+                                        $bidaia = $stmt->fetch(PDO::FETCH_ASSOC);
+                                        echo htmlspecialchars($bidaia['egoera']);
+                                        ?>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -318,7 +375,47 @@ if ($gidaria) {
     <script src="ets/js/gidariak/bidaiakIkusi.js"></script>
     <script src="assets/js/default/gehiagoIkusiHistoriala.js"></script>
 </body>assets/js/default/util.js"></script>
-    <script src="assets/js/default/main.js"></script>
-    <script src="ass
+<script src="assets/js/default/main.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const filterJatorria = document.getElementById("filterJatorria");
+        const filterEgoera = document.getElementById("filterEgoera");
+        const sortFechaBtn = document.getElementById("sortFecha");
+        let sortAsc = true;
+
+        function filterRows() {
+            const jatorriaValue = filterJatorria.value.toLowerCase();
+            const egoeraValue = filterEgoera.value;
+
+            document.querySelectorAll(".historiala-row").forEach(row => {
+                const jatorria = row.children[3].textContent.toLowerCase();
+                const egoera = row.children[5].textContent.trim();
+
+                const matchesJatorria = jatorria.includes(jatorriaValue);
+                const matchesEgoera = egoeraValue === "" || egoera === egoeraValue;
+
+                row.style.display = (matchesJatorria && matchesEgoera) ? "" : "none";
+            });
+        }
+
+        function sortRowsByFecha() {
+            const tbody = document.getElementById("historiala-tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+
+            rows.sort((a, b) => {
+                const dateA = new Date(a.children[1].textContent + ' ' + a.children[2].textContent);
+                const dateB = new Date(b.children[1].textContent + ' ' + b.children[2].textContent);
+                return sortAsc ? dateB - dateA : dateA - dateB;
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
+            sortAsc = !sortAsc;
+        }
+
+        filterJatorria.addEventListener("input", filterRows);
+        filterEgoera.addEventListener("change", filterRows);
+        sortFechaBtn.addEventListener("click", sortRowsByFecha);
+    });
+</script>
 
 </html>
