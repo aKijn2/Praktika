@@ -5,13 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const dataLabel = document.querySelector("label[for='data']");
   const orduaLabel = document.querySelector("label[for='ordua']");
 
-  if (
-    !erreserbaSelect ||
-    !dataInput ||
-    !orduaInput ||
-    !dataLabel ||
-    !orduaLabel
-  ) {
+  if (!erreserbaSelect || !dataInput || !orduaInput || !dataLabel || !orduaLabel) {
     console.error("Uno o más elementos no se encontraron");
     return;
   }

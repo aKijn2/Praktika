@@ -13,8 +13,8 @@
   background: #fff;
   padding: 20px 25px;
   border-radius: 12px;
-  width: 100%;
-  max-width: 700px;
+  width: auto;
+  max-width: 80em;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -34,7 +34,7 @@
 
 /* TABLE STYLE */
 .bidaia-table {
-  width: 100%;
+  width: 87em;
   border-collapse: collapse;
   font-size: 0.85em;
   margin-top: 10px;

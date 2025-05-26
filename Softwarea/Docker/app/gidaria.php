@@ -194,7 +194,7 @@ if ($gidaria) {
 
         <!-- BIDAIEN HISTORIALA -->
         <section id="intro" class="main">
-            <h2>ZUK amaitutako BIDAIEN HISTORIALA</h2>
+            <h2>BIDAIEN HISTORIALA</h2>
 
             <?php if (count($historiala) === 0): ?>
                 <p>Ez dago amaitutako bidaiarik.</p>
