@@ -1,32 +1,34 @@
+🚖 ALAIKTO MUGI - Taxi Enpresarentzako Kudeaketa sISTEMA
 
-# ALAIKTO MUGI - TAXI ENPRESA
+**Proiektu hau klaseko lana da**, Iker Hernández Navas eta Achraf Allach Chahboun ikasleen egina,  
+**Tolosaldea Lanbide Heziketa Institutuko** Lehenengo Mailako **Aplikazioen Garapeneko ikasleak** gara.
 
-Proiektu hau klaseko lana da, Iker Hernández Navas eta Achraf Allach Chahboun ikasleen egina, Tolosaldea Lanbide Heziketa Institutuko Lehenengo Mailako Aplikazioen Garapeneko ikasleak gara.
+---
 
-
-
-## Autoreak
+## 🧑‍💻 Autoreak
 
 - [@ikerherna28](https://github.com/ikerherna28)
 - [@aKjin2](https://github.com/aKjin2)
 
+---
 
-## Proiektuaren deskribapena
+## 📦 Proiektuaren deskribapena
 
-AlaiktoMUGI taxi enpresa bat da, eta aplikazio hau enpresaren administratzaileentzako garatu da. Aplikazioaren helburua gidariak eta bidaiak modu erraz eta profesional batean kudeatzea da, bai bidaiak sortu eta editatuz, bai gidariak kudeatuz.
+**AlaiktoMUGI** taxi enpresa baterako sortutako aplikazioa da, enpresaren **administratzaileentzako**.  
+Aplikazioaren helburua da **bidaiak eta gidariak kudeatzeko** sistema erraza, erabilerraza eta profesionala eskaintzea.
 
-Aplikazioak aukera ematen du:
+## 📝 Edukia
 
-    - Administratzaileak gidariak sortu, aldatu, ezabatu eta kontsultatzeko.
+Aplikazio honek honako atalak ditu:
 
-    - Bidaiak sortu, editatu, egoera aldatu eta bidaiaren informazioa ikus daiteke.
+- 🔐 **Saio-hasiera** (Login) sistemarekin.
+- 👨‍✈️ **Gidariak kudeatu** (sortu, editatu, ezabatu, kontsultatu).
+- 🚕 **Bidaiak kudeatu** (esleitu, egoera aldatu, xehetasunak ikusi).
+- 🔎 **Bilatzaile eta iragazkiak**: helmuga, jatorria, gidaria, bezeroa, egoera...
+- 🗂️ Interfaze intuitiboa eta guztiz **euskaraz** egina.
+- 🖼️ Diseinu profesionala: logoa, tipografia egokitua eta interfaz erakargarria.
 
-    - Bidaiak gidari zehatz bati esleitu eta bidaiaren egoera kudeatu.
-
-    - Pantaila nagusian bidai eta gidarien informazio orokorra ikustea.
-
-    - Den-dena euskaraz eta profesionaltasunarekin.
-
+---
 
 ## Proeiktua testatu/Entornoa sortu
 
@@ -35,7 +37,7 @@ Hasteko, ziurtatu Docker instalatuta duzula zure sisteman, eta gero klonatu repo
 
 Ondoren, nabigatu zure terminalean klonatu zenuen direktorioraino eta jarri martxan web zerbitzarirako edukiontziak `.docker-compose up -d --build app` exekutatuz.
 
-Amaitu ondoren, jarraitu [README.md](https://github.com/ikerherna28/pakaggarraioak-pakete-kudeaketa?tab=readme-ov-file#pakaggarraioak-pakete-kudeaketa) fitxategiaren urratsei proiektua gauzatu ahal izateko.
+Amaitu ondoren, jarraitu [README.md] fitxategiaren urratsei proiektua gauzatu ahal izateko.
 
 
 *Oharra:* MySQL datu-basearen host izena `mysql` da, ez localhost. Nahiz eta izena localhost ez izan gure zerbitzua `localhost`-en aurkitzen da. Gure kasuan, datu basearen izena `webapp` horrela konfiguratu dugulako Docker kontenedore/bolumena sortzerakoan.
