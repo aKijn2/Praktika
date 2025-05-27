@@ -1,4 +1,4 @@
-🚖 ALAIKTO MUGI - Taxi Enpresarentzako Kudeaketa sISTEMA
+# 🚖 ALAIKTO MUGI - Taxi Enpresarentzako Kudeaketa Sistema
 
 **Proiektu hau klaseko lana da**, Iker Hernández Navas eta Achraf Allach Chahboun ikasleen egina,  
 **Tolosaldea Lanbide Heziketa Institutuko** Lehenengo Mailako **Aplikazioen Garapeneko ikasleak** gara.
