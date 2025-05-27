@@ -8,7 +8,7 @@
 ## 🧑‍💻 Autoreak
 
 - [@ikerherna28](https://github.com/ikerherna28)
-- [@aKjin2](https://github.com/aKjin2)
+- [@aKjin2](https://github.com/aKijn2)
 
 ---
 
@@ -40,7 +40,7 @@ Ondoren, nabigatu zure terminalean klonatu zenuen direktorioraino eta jarri mart
 Amaitu ondoren, jarraitu [README.md] fitxategiaren urratsei proiektua gauzatu ahal izateko.
 
 
-*Oharra:* MySQL datu-basearen host izena `mysql` da, ez localhost. Nahiz eta izena localhost ez izan gure zerbitzua `localhost`-en aurkitzen da. Gure kasuan, datu basearen izena `webapp` horrela konfiguratu dugulako Docker kontenedore/bolumena sortzerakoan.
+*Oharra:* MySQL datu-basearen host izena `mysql` da, ez localhost. Nahiz eta izena localhost ez izan gure zerbitzua `localhost`-en aurkitzen da. Gure kasuan, datu basearen izena `alaiktoMugi` horrela konfiguratu dugulako Docker kontenedore/bolumena sortzerakoan.
 Datu basearen erabiltzaile eta pasahitza `root`/`mysql` dira.
 
 Docker Compose sarea app-arekin igotzeak, bakarrik erabili ordez, ziurtatzen du gure guneko edukiontziak bakarrik sortzen direla hasieran, kontenedore guztien ordez. Hauek dira gure web zerbitzariarentzat eraiki diren portuak, xehetasun guztiekin:
