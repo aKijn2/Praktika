@@ -1,23 +1,54 @@
+/**
+ * @author IKER HERNÁNDEZ - ACHRAF ALLACH
+ * 
+ * Gidariak altan emateko aplikazioaren leiho grafikoa definitzen du.
+ * Gidari berriak sartzeko inprimakia eskaintzen du eta datu basearekin konektatzen da.
+ */
 package com.kudeaketa.alaiktomugi;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.sql.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+/**
+ * Gidari berriak altan emateko leiho grafikoa.
+ * Erabiltzaile-interfaze bat eskaintzen du gidariaren datuak biltzeko.
+ */
 public class GidariakAltanEmanPanela extends JFrame {
+    // Erabiltzaileen datuak jasotzeko testu-eremuak
     private JTextField[] inputFields = new JTextField[10];
+
+    // Etiketak, informazioaren espezifikazioarekin
     private final String[] labels = {
         "NAN", "Izena", "Abizena", "Helbidea", "Jaiotze Data (YYYY-MM-DD)", "Emaila",
         "Telefonoa", "Pasahitza", "Erabiltzailea", "Taxi Matrikula"
     };
 
+    /**
+     * Eraikitzailea: Gidari berriak gehitzeko interfaze grafikoa sortzen du.
+     */
     public GidariakAltanEmanPanela() {
-        setTitle("Gidariak Gehitu");
+        setTitle("Gidariak Gehitu"); // Leihoaren izenburua ezartzen du
         setSize(600, 330);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Leihoa itxi egiten da
 
+        // Leihoaren diseinua definitzen du
         JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         mainPanel.setBackground(Color.WHITE);
@@ -29,6 +60,7 @@ public class GidariakAltanEmanPanela extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
+        // Inprimakia sortzen du
         JPanel formPanel = new JPanel(new GridLayout(5, 4, 10, 10));
         formPanel.setBackground(Color.WHITE);
         for (int i = 0; i < labels.length; i++) {
@@ -52,7 +84,7 @@ public class GidariakAltanEmanPanela extends JFrame {
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-        // Listeners
+        // Botoien ekintza-entzuleak
         addButton.addActionListener(e -> insertGidaria());
         openManageButton.addActionListener(e -> {
             GidariakIkusiEtaEguneratuPanela frame = new GidariakIkusiEtaEguneratuPanela();
@@ -60,6 +92,11 @@ public class GidariakAltanEmanPanela extends JFrame {
         });
     }
 
+    /**
+     * Berde koloreko botoia sortzen du interfazearen estiloarekin bat egiteko.
+     * @param text Botoiaren testua
+     * @return Sortutako botoia
+     */
     private JButton createGreenButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(46, 204, 113));
@@ -70,8 +107,11 @@ public class GidariakAltanEmanPanela extends JFrame {
         return button;
     }
 
+    /**
+     * Gidari berri bat datu basean gehitzen du.
+     * Datu guztiak beteta daudela egiaztatzen du eta SQL komandoa exekutatzen du.
+     */
     private void insertGidaria() {
-        // Validar que ningún campo esté vacío
         for (int i = 0; i < inputFields.length; i++) {
             if (inputFields[i].getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, labels[i] + " ezin da hutsik egon.", "Errorea", JOptionPane.ERROR_MESSAGE);
@@ -93,6 +133,9 @@ public class GidariakAltanEmanPanela extends JFrame {
         }
     }
 
+    /**
+     * Inprimakiko eremu guztiak garbitzen ditu.
+     */
     private void clearForm() {
         for (JTextField f : inputFields) {
             f.setText("");

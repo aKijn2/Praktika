@@ -1,39 +1,78 @@
 package com.kudeaketa.alaiktomugi;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.regex.Pattern;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
-import java.sql.*;
-import java.util.regex.Pattern;
+
+/**
+ * GidariakIkusiEtaEguneratuPanela klasea.
+ * 
+ * Leiho honek datu-baseko gidari guztiak taula batean bistaratzen ditu,
+ * eta hauek eguneratzeko edo ezabatzeko aukera eskaintzen du.
+ * Bilaketa sistema bat ere badu NAN, izena edo abizena erabiliz.
+ * 
+ * @author IKER HERNÁNDEZ - ACHRAF ALLACH
+ * @version 1.0
+ */
 
 public class GidariakIkusiEtaEguneratuPanela extends JFrame {
 
+    // Taularen zutabe izenak
     private static final String[] COLUMN_NAMES = {
-            "NAN", "Izena", "Abizena", "Helbidea", "Jaiotze Data",
-            "Emaila", "Telefonoa", "Pasahitza", "Erabiltzailea", "Taxi Matrikula"
+        "NAN", "Izena", "Abizena", "Helbidea", "Jaiotze Data",
+        "Emaila", "Telefonoa", "Pasahitza", "Erabiltzailea", "Taxi Matrikula"
     };
 
+    // Kolore eta letra-tipoak
     private static final Color PRIMARY_GREEN = new Color(46, 204, 113);
     private static final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 28);
     private static final Font FONT_LABEL = new Font("Segoe UI", Font.PLAIN, 14);
     private static final Font FONT_BUTTON = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_TABLE = new Font("Segoe UI", Font.PLAIN, 14);
 
+    // GUI osagaiak
     private JTable table;
     private DefaultTableModel tableModel;
     private TableRowSorter<DefaultTableModel> sorter;
     private JTextField searchField;
     private final JTextField[] inputFields = new JTextField[COLUMN_NAMES.length];
 
+    /**
+     * Eraikitzailea. Leihoa eta osagai guztiak sortzen ditu.
+     */
     public GidariakIkusiEtaEguneratuPanela() {
         initializeFrame();
         initComponents();
         loadData();
     }
 
+    /**
+     * Leihoaren hasierako ezarpenak konfiguratzen ditu.
+     */
     private void initializeFrame() {
         setTitle("Gidariak Ikusi eta Eguneratu");
         setSize(1000, 800);
@@ -41,6 +80,9 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Panel nagusiko osagai guztiak hasieratzen eta gehitzen ditu.
+     */
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -53,6 +95,10 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         mainPanel.add(createBottomPanel(), BorderLayout.SOUTH);
     }
 
+    /**
+     * Goiburuko etiketaren sorrera (izenburua).
+     * @return JLabel
+     */
     private JLabel createTitleLabel() {
         JLabel titleLabel = new JLabel("GIDARIAK IKUSI, EGUNERATU ETA EZABATU", SwingConstants.CENTER);
         titleLabel.setFont(FONT_TITLE);
@@ -60,11 +106,15 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         return titleLabel;
     }
 
+    /**
+     * Taula bat sortzen du gidarien informazioa bistaratzeko.
+     * @return JScrollPane
+     */
     private JScrollPane createTableScrollPane() {
         tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return false; // Gelaxkak ezin dira zuzenean editatu
             }
         };
 
@@ -75,6 +125,7 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         sorter = new TableRowSorter<>(tableModel);
         table.setRowSorter(sorter);
 
+        // Aukeratutako errenkadaren datuak formularioan kargatzen dira
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && table.getSelectedRow() != -1) {
                 fillFormFromSelectedRow();
@@ -86,6 +137,10 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         return scrollPane;
     }
 
+    /**
+     * Gidariaren datuak sartzeko formulario-panelaren sorrera.
+     * @return JPanel
+     */
     private JPanel createFormPanel() {
         JPanel formPanel = new JPanel(new GridLayout(COLUMN_NAMES.length, 2, 10, 10));
         formPanel.setBackground(Color.WHITE);
@@ -106,6 +161,10 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         return formPanel;
     }
 
+    /**
+     * Beheko botoi eta bilaketa-panelaren sorrera.
+     * @return JPanel
+     */
     private JPanel createBottomPanel() {
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setBackground(Color.WHITE);
@@ -116,6 +175,10 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         return bottomPanel;
     }
 
+    /**
+     * Eguneratu eta Ezabatu botoiak sortzen ditu.
+     * @return JPanel
+     */
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         buttonPanel.setBackground(Color.WHITE);
@@ -132,6 +195,10 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         return buttonPanel;
     }
 
+    /**
+     * Bilaketa-eremua duen panela sortzen du.
+     * @return JPanel
+     */
     private JPanel createSearchPanel() {
         JPanel searchPanel = new JPanel(new BorderLayout());
         searchPanel.setBackground(Color.WHITE);
@@ -166,6 +233,11 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         return searchPanel;
     }
 
+    /**
+     * Kolore berdez botoi bat sortzen du.
+     * @param text Botoiaren testua
+     * @return JButton
+     */
     private JButton createGreenButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(PRIMARY_GREEN);
@@ -176,6 +248,9 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         return button;
     }
 
+    /**
+     * Gidarien datuak datu-basetik kargatzen ditu taulara.
+     */
     private void loadData() {
         tableModel.setRowCount(0);
         try (Connection conn = konexioa.getConnection();
@@ -196,6 +271,9 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         }
     }
 
+    /**
+     * Hautatutako errenkadaren datuak formularioan kargatzen ditu.
+     */
     private void fillFormFromSelectedRow() {
         int selectedRow = table.convertRowIndexToModel(table.getSelectedRow());
         for (int i = 0; i < inputFields.length; i++) {
@@ -204,6 +282,9 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         }
     }
 
+    /**
+     * Bilaketa testuaren arabera taula iragazten du.
+     */
     private void filter() {
         String text = searchField.getText().trim();
         if (text.isEmpty() || text.equals("Bilatu NAN, izena edo abizena...")) {
@@ -213,6 +294,9 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         }
     }
 
+    /**
+     * Hautatutako gidariaren datuak eguneratzen ditu datu-basean.
+     */
     private void updateGidaria() {
         if (table.getSelectedRow() == -1) {
             showInfo("Mesedez, aukeratu gidari bat eguneratzeko.");
@@ -248,6 +332,9 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         }
     }
 
+    /**
+     * Sartutako NAN-aren arabera gidaria ezabatzen du.
+     */
     private void deleteGidariaByNAN() {
         String nan = inputFields[0].getText().trim();
         if (nan.isEmpty()) {
@@ -280,6 +367,9 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         }
     }
 
+    /**
+     * Formularioa garbitzen du (testu-eremuak hutsik eta hautapena kendu).
+     */
     private void clearForm() {
         for (JTextField field : inputFields) {
             field.setText("");
@@ -287,10 +377,18 @@ public class GidariakIkusiEtaEguneratuPanela extends JFrame {
         table.clearSelection();
     }
 
+    /**
+     * Errore mezua erakusten du.
+     * @param message Errorearen mezua
+     */
     private void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Errorea", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Informazio mezua erakusten du.
+     * @param message Mezua
+     */
     private void showInfo(String message) {
         JOptionPane.showMessageDialog(this, message, "Informazioa", JOptionPane.INFORMATION_MESSAGE);
     }

@@ -1,152 +1,161 @@
+/**
+ * @author IKER HERNÁNDEZ - ACHRAF ALLACH
+ * 
+ * Erabiltzaileak saioa hasteko leiho grafikoa.
+ * Administratzailea autentifikatzeko interfazea eskaintzen du.
+ */
 package com.kudeaketa.alaiktomugi;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.sql.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+
+/**
+ * LoginPanela klasea: Administratzaileak saioa hasteko interfaze grafikoa.
+ * Erabiltzaileak posta elektronikoa eta pasahitza sartu behar ditu.
+ */
 public class LoginPanela extends JFrame {
 
-    private JTextField sartuEmailaTextField;
-    private JPasswordField sartuPasahitzaTextField;
-    private JButton saioaHasiButton;
+    /** Erabiltzailearen posta elektronikoa gordetzeko eremua */
+    private JTextField emailField;
 
+    /** Erabiltzailearen pasahitza gordetzeko eremua */
+    private JPasswordField passwordField;
+
+    /**
+     * Eraikitzailea: Saioa hasteko interfaze grafikoa inicializatzen du.
+     */
     public LoginPanela() {
         initComponents();
     }
 
+    /**
+     * Interfaze grafikoaren osagaiak inicializatzen ditu.
+     */
     private void initComponents() {
-        setTitle("AlaikToMugi - Login");
+        setTitle("AlaiktoMUGI - Login"); // Leihoaren izenburua
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(400, 500);
+        setSize(500, 400);
         setLocationRelativeTo(null);
 
-        // Fondo gris muy claro
-        Color fondo = new Color(245, 247, 250);
-        getContentPane().setBackground(fondo);
-        setLayout(new GridBagLayout());
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        setContentPane(contentPanel);
 
-        // Panel blanco central con borde redondeado y mismo color de fondo (sin sombra)
-        JPanel formPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(fondo);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
-                g2.dispose();
-            }
-        };
-        formPanel.setOpaque(false);
-        formPanel.setPreferredSize(new Dimension(340, 400));
-        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formPanel.setBorder(new EmptyBorder(40, 40, 40, 40));
+     // Logoaren panela sortu
+        JPanel logoPanel = new JPanel();
+        // Atzeko kolorea zuria jarri
+        logoPanel.setBackground(Color.WHITE);
 
-        add(formPanel);
+        // JLabel deklaratu, irudia edo testua jartzeko
+        JLabel logoLabel;
 
-        // Logo centrado
-        JLabel logoLabel = new JLabel();
-        ImageIcon logoIcon = new ImageIcon("img/logo.jpg");
-        Image scaledLogo = logoIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-        logoLabel.setIcon(new ImageIcon(scaledLogo));
-        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        formPanel.add(logoLabel);
+        // Irudiaren URL-a lortu klasearen baliabideetatik
+        URL imageUrl = getClass().getResource("/irudiak/logo1.png");
+        if (imageUrl != null) {
+            // Irudia kargatu
+            ImageIcon originalIcon = new ImageIcon(imageUrl);
+            // Irudia tamaina egokian eskalatu (200x100)
+            Image scaledImage = originalIcon.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
+            // Eskalatua den irudia ImageIcon bihurtu
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            // JLabel-ean irudia jarri
+            logoLabel = new JLabel(scaledIcon);
+        } else {
+            // Irudia aurkitu ez badu, errore-mezua idatzi kontsolan
+            System.err.println("Ez da aurkitu /irudiak/logo1.png irudia");
+            // Eta testu bat jarri JLabel-ean
+            logoLabel = new JLabel("Irudia aurkitu ez da");
+        }
 
-        formPanel.add(Box.createVerticalStrut(30));
+        // JLabel panela gehitu
+        logoPanel.add(logoLabel);
+        // Logo panela edukia duen panela (contentPanel) ipini goialdean
+        contentPanel.add(logoPanel, BorderLayout.NORTH);
 
-        // Email Field con placeholder
-        sartuEmailaTextField = createUnderlinedField("Erabiltzailea (Emaila)");
-        formPanel.add(sartuEmailaTextField);
-        formPanel.add(Box.createVerticalStrut(25));
 
-        // Password Field con placeholder
-        sartuPasahitzaTextField = new JPasswordField();
-        sartuPasahitzaTextField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        sartuPasahitzaTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(46, 204, 113)));
-        sartuPasahitzaTextField.setForeground(Color.GRAY);
-        sartuPasahitzaTextField.setEchoChar((char)0); // Mostrar placeholder al inicio
-        sartuPasahitzaTextField.setText("Pasahitza");
-        sartuPasahitzaTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
-        sartuPasahitzaTextField.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (String.valueOf(sartuPasahitzaTextField.getPassword()).equals("Pasahitza")) {
-                    sartuPasahitzaTextField.setText("");
-                    sartuPasahitzaTextField.setForeground(Color.BLACK);
-                    sartuPasahitzaTextField.setEchoChar('●');
-                }
-            }
+        // Inprimaki-panela
+        JPanel formPanel = new JPanel();
+        formPanel.setBackground(Color.WHITE);
+        formPanel.setLayout(new GridLayout(4, 1, 10, 10));
 
-            public void focusLost(FocusEvent e) {
-                if (String.valueOf(sartuPasahitzaTextField.getPassword()).isEmpty()) {
-                    sartuPasahitzaTextField.setEchoChar((char)0);
-                    sartuPasahitzaTextField.setText("Pasahitza");
-                    sartuPasahitzaTextField.setForeground(Color.GRAY);
-                }
-            }
-        });
-        formPanel.add(sartuPasahitzaTextField);
+        JLabel emailLabel = new JLabel("POSTA:");
+        emailLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        formPanel.add(emailLabel);
 
-        formPanel.add(Box.createVerticalStrut(40));
+        emailField = new JTextField();
+        emailField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(emailField);
 
-        // Botón con efecto hover
-        saioaHasiButton = new JButton("Saioa Hasi");
-        saioaHasiButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        saioaHasiButton.setForeground(Color.WHITE);
-        saioaHasiButton.setBackground(new Color(46, 204, 113));
-        saioaHasiButton.setFocusPainted(false);
-        saioaHasiButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        saioaHasiButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        saioaHasiButton.setBorder(BorderFactory.createEmptyBorder(12, 50, 12, 50));
+        JLabel passwordLabel = new JLabel("PASAHITZA:");
+        passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        passwordLabel.setPreferredSize(new Dimension(100, 500));
+        formPanel.add(passwordLabel);
 
-        // Hover effect
-        saioaHasiButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                saioaHasiButton.setBackground(new Color(39, 174, 96));
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                saioaHasiButton.setBackground(new Color(46, 204, 113));
-            }
-        });
+        passwordField = new JPasswordField();
+        passwordField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(passwordField);
 
-        saioaHasiButton.addActionListener(evt -> loginAdministratzailea());
-        formPanel.add(saioaHasiButton);
+        contentPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Botoien panela
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+
+        JButton hasiButton = new JButton("HASI");
+        hasiButton.setBackground(new Color(46, 204, 113));
+        hasiButton.setForeground(Color.WHITE);
+        hasiButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        hasiButton.setFocusPainted(false);
+        hasiButton.setPreferredSize(new Dimension(100, 40));
+        hasiButton.addActionListener(e -> loginAdministratzailea());
+        buttonPanel.add(hasiButton);
+
+        JButton itxiButton = new JButton("ITXI");
+        itxiButton.setBackground(new Color(231, 76, 60));
+        itxiButton.setForeground(Color.WHITE);
+        itxiButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        itxiButton.setFocusPainted(false);
+        itxiButton.setPreferredSize(new Dimension(100, 40));
+        itxiButton.addActionListener(e -> System.exit(0));
+        buttonPanel.add(itxiButton);
+
+        contentPanel.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private JTextField createUnderlinedField(String placeholder) {
-        JTextField field = new JTextField();
-        field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        field.setForeground(Color.GRAY);
-        field.setText(placeholder);
-        field.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(46, 204, 113)));
-        field.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        field.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (field.getText().equals(placeholder)) {
-                    field.setText("");
-                    field.setForeground(Color.BLACK);
-                }
-            }
-            public void focusLost(FocusEvent e) {
-                if (field.getText().isEmpty()) {
-                    field.setForeground(Color.GRAY);
-                    field.setText(placeholder);
-                }
-            }
-        });
-        return field;
-    }
-
+    /**
+     * Administratzailea autentifikatzen du datu-basean.
+     * Emaila eta pasahitza egiaztatzen ditu.
+     */
     private void loginAdministratzailea() {
-        String emaila = sartuEmailaTextField.getText().trim();
-        String pasahitza = new String(sartuPasahitzaTextField.getPassword());
+        String emaila = emailField.getText().trim();
+        String pasahitza = new String(passwordField.getPassword());
 
-        if (emaila.isEmpty() || emaila.equals("Erabiltzailea (Emaila)") ||
-            pasahitza.isEmpty() || pasahitza.equals("Pasahitza")) {
+        // Eremuak hutsik dauden egiaztatu
+        if (emaila.isEmpty() || pasahitza.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Mesedez, bete eremu guztiak.", "Informazioa",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -172,5 +181,13 @@ public class LoginPanela extends JFrame {
             JOptionPane.showMessageDialog(this, "Errorea datu-basearekin: " + ex.getMessage(), "Errorea",
                     JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    /**
+     * Programa abiarazten du eta LoginPanela leihoa bistaratzen du.
+     * @param args Komando-lerroko argumentuak.
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new LoginPanela().setVisible(true));
     }
 }

@@ -1,13 +1,38 @@
 package com.kudeaketa.alaiktomugi;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.*;
-import java.awt.*;
-import java.sql.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
+/**
+ * GidariakIkusiPanela klasea gidarien informazioa taula batean bistaratzen duen 
+ * leiho grafiko bat da. Gidari bakoitzaren datuak datu-basetik kargatzen dira eta
+ * bilaketa iragazteko testu-eremua eskaintzen da.
+ * 
+ * @author IKER HERNÁNDEZ - ACHRAF ALLACH
+ */
 public class GidariakIkusiPanela extends JFrame {
 
     private JTable table;
@@ -15,6 +40,10 @@ public class GidariakIkusiPanela extends JFrame {
     private TableRowSorter<DefaultTableModel> sorter;
     private JTextField filterTextField;
 
+    /**
+     * GidariakIkusiPanela klasearen eraikitzailea. Izenburua, tamaina eta 
+     * kokapena ezartzen ditu eta osagaiak hasieratzen ditu.
+     */
     public GidariakIkusiPanela() {
         setTitle("Gidariak Ikusi");
         setSize(950, 500);
@@ -25,13 +54,16 @@ public class GidariakIkusiPanela extends JFrame {
         loadDataFromDatabase();
     }
 
+    /**
+     * Panel nagusia, goiko panela, taula eta iragazkiaren osagaiak hasieratzen ditu.
+     */
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         setContentPane(mainPanel);
 
-        // Título y filtro
+        // Tituloa eta iragazkia
         JPanel topPanel = new JPanel(new BorderLayout(15, 0));
         topPanel.setBackground(Color.WHITE);
         mainPanel.add(topPanel, BorderLayout.NORTH);
@@ -44,12 +76,12 @@ public class GidariakIkusiPanela extends JFrame {
         JPanel filterPanel = new JPanel(new BorderLayout());
         filterPanel.setBackground(Color.WHITE);
         filterPanel.setPreferredSize(new Dimension(300, 40));
-        filterPanel.setBorder(BorderFactory.createLineBorder(new Color(46, 204, 113), 2)); // Verde
+        filterPanel.setBorder(BorderFactory.createLineBorder(new Color(46, 204, 113), 2));
         topPanel.add(filterPanel, BorderLayout.EAST);
 
         JLabel iconLabel = new JLabel("\uD83D\uDD0D ");
         iconLabel.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20));
-        iconLabel.setForeground(new Color(46, 204, 113)); // Verde
+        iconLabel.setForeground(new Color(46, 204, 113));
         iconLabel.setBorder(new EmptyBorder(0, 5, 0, 5));
         filterPanel.add(iconLabel, BorderLayout.WEST);
 
@@ -59,7 +91,7 @@ public class GidariakIkusiPanela extends JFrame {
         filterPanel.add(filterTextField, BorderLayout.CENTER);
         addPlaceholder(filterTextField, "Iragazi izena, nan, taxi matrikula...");
 
-        // Tabla
+        // Taula konfigurazioa
         String[] columnNames = { "ID", "NAN", "Izena", "Abizena", "Helbidea", "Jaiotze data", "Emaila", "Telefonoa",
                 "Erabiltzailea", "Taxi matrikula" };
         tableModel = new DefaultTableModel(columnNames, 0) {
@@ -72,11 +104,11 @@ public class GidariakIkusiPanela extends JFrame {
         table.setRowHeight(28);
         table.setFillsViewportHeight(true);
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 16));
-        table.getTableHeader().setBackground(new Color(46, 204, 113)); // Verde
+        table.getTableHeader().setBackground(new Color(46, 204, 113));
         table.getTableHeader().setForeground(Color.WHITE);
         table.getTableHeader().setReorderingAllowed(false);
 
-        // Alternancia de color
+        // Taularen lerroen koloreak txandakatuta
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             private final Color evenColor = new Color(245, 245, 245);
 
@@ -95,7 +127,7 @@ public class GidariakIkusiPanela extends JFrame {
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(189, 195, 199), 1));
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Filtro dinámico
+        // Iragazki dinamikoa
         sorter = new TableRowSorter<>(tableModel);
         table.setRowSorter(sorter);
         filterTextField.getDocument().addDocumentListener(new DocumentListener() {
@@ -113,6 +145,9 @@ public class GidariakIkusiPanela extends JFrame {
         });
     }
 
+    /**
+     * Testu-eremuan sartutakoaren arabera taulan iragazketa aplikatzen du.
+     */
     private void filterTable() {
         String text = filterTextField.getText();
         if (text.trim().length() == 0 || text.equals("Iragazi izena, nan, taxi matrikula...")) {
@@ -122,6 +157,12 @@ public class GidariakIkusiPanela extends JFrame {
         }
     }
 
+    /**
+     * Testu-eremu batean placeholder testu bat gehitzen du.
+     * 
+     * @param textField Testu-eremua
+     * @param placeholder Placeholder testua
+     */
     private void addPlaceholder(JTextField textField, String placeholder) {
         textField.setForeground(Color.GRAY);
         textField.setText(placeholder);
@@ -142,6 +183,9 @@ public class GidariakIkusiPanela extends JFrame {
         });
     }
 
+    /**
+     * Datu-basetik gidarien datuak kargatzen ditu eta taulan bistaratzen ditu.
+     */
     private void loadDataFromDatabase() {
         tableModel.setRowCount(0);
         try (Connection conn = konexioa.getConnection()) {
